@@ -1,25 +1,31 @@
 #ifndef STACK_HPP_
 #define STACK_HPP_
+#include "list.hpp"
 
 template <typename T>
 class Stack
 {
   public:
+    List<T> _Stack;
     void push(const T& newElement);
     T pop();
+    bool Empty();
 };
 
 template <typename T>
 void Stack<T>::push(const T& newElement)
 {
-  // TODO: implement
+    _Stack.pushFront(newElement);
 }
 
 template <typename T>
 T Stack<T>::pop()
 {
-  // TODO: implement
-  return T();
+    T rem = _Stack[0];
+    _Stack.remove(_Stack[0]);
+
+    return T(rem);
 }
+
 
 #endif /* STACK_HPP_ */

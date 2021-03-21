@@ -80,21 +80,21 @@ TEST_CASE("List/remove")
 
     REQUIRE(list[0] == 3);
 }
+/*
+TEST_CASE("List/iterator")
+{
+    List<int> list;
 
-//TEST_CASE("List/iterator")
-//{
-//    List<int> list;
-//
-//    list.pushBack(1);
-//    list.pushBack(3);
-//    list.pushBack(2);
-//
-//    std::sort(list.begin(), list.end());
-//
-//    REQUIRE(list[0] == 1);
-//    REQUIRE(list[1] == 2);
-//    REQUIRE(list[2] == 3);
-//}
+    list.pushBack(1);
+    list.pushBack(3);
+    list.pushBack(2);
+
+    std::sort(list.begin(), list.end());
+
+    REQUIRE(list[0] == 1);
+    REQUIRE(list[1] == 2);
+    REQUIRE(list[2] == 3);
+}*/
 //
 //TEST_CASE("List/ConstIterator")
 //{
@@ -114,32 +114,35 @@ TEST_CASE("List/remove")
 //    }
 //}
 //
-//TEST_CASE("Stack")
-//{
-//    Stack<int> stack;
-//
-//    stack.push(1);
-//    stack.push(2);
-//    stack.push(3);
-//
-//    REQUIRE(stack.pop() == 3);
-//    REQUIRE(stack.pop() == 2);
-//    REQUIRE(stack.pop() == 1);
-//}
-//
-//TEST_CASE("Queue")
-//{
-//    Queue<int> queue;
-//
-//    queue.enqueue(1);
-//    queue.enqueue(2);
-//    queue.enqueue(3);
-//
-//    REQUIRE(queue.dequeue() == 1);
-//    REQUIRE(queue.dequeue() == 2);
-//    REQUIRE(queue.dequeue() == 3);
-//}
-//
+
+TEST_CASE("Stack")
+{
+    Stack<int> stack;
+
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+
+
+    REQUIRE(stack.pop() == 3);
+    REQUIRE(stack.pop() == 2);
+    REQUIRE(stack.pop() == 1);
+
+}
+
+TEST_CASE("Queue")
+{
+    Queue<int> queue;
+
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+
+    REQUIRE(queue.dequeue() == 1);
+    REQUIRE(queue.dequeue() == 2);
+    REQUIRE(queue.dequeue() == 3);
+}
+
 //TEST_CASE("PriorityQueue")
 //{
 //    PriorityQueue<int> queue;

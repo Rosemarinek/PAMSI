@@ -22,11 +22,11 @@ class List
       public:
         using difference_type = long;
         using value_type = T;
-        using pointer = const T*;
+        using pointer = const std::shared_ptr<T>; //ZMIANA
         using reference = const T&;
         using iterator_category = std::random_access_iterator_tag;
 
-        Iterator(Node* node = nullptr);
+        Iterator(std::shared_ptr<Node> node = nullptr); //ZMIANA
 
         Iterator operator++();
         Iterator operator--();
@@ -67,7 +67,9 @@ class List
 
     std::shared_ptr<Node> _head;
     std::shared_ptr<Node> _tail;
-    explicit List();
+    static std::shared_ptr<Node> _currNode;
+
+    List();
 
     void pushBack(const T& newElement);
     void pushFront(const T& newElement);
@@ -94,18 +96,20 @@ List<T>::List()
 {
     this->_head = nullptr;
     this->_tail = nullptr;
+   // this->_currNode = nullptr;
 }
 
 template <typename T>
-List<T>::Iterator::Iterator(typename List<T>::Node* node)
+List<T>::Iterator::Iterator(typename std::shared_ptr<List<T>::Node> node)
 {
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator++()
 {
+
     // TODO: implement
-    return Iterator();
+    return Iterator(_currNode->_next);
 }
 
 template <typename T>
@@ -271,10 +275,6 @@ void List<T>::pushBack(const T& newElement)
     newElem->_data = newElement;
 
     // TODO: wyrzucanie wyjatkow
-    //    if(newElem== nullptr)
-    //    {
-    //        throw std::invalid_argument( "Memory allocation problem" ); //???
-    //    }
 
     if(_head == nullptr) // jesli lista jest pusta
     {
@@ -288,7 +288,6 @@ void List<T>::pushBack(const T& newElement)
         _tail->_next = newElem;     // to na co wskazuje tail, niech wskazuje na newELem
 
         _tail = newElem; // niech tail wskazuje na newElem
-        // _tail -> _previous -> _next = newElem;
     }
 }
 
@@ -351,7 +350,7 @@ void List<T>::remove(const T& element)
 {
     if(_head == nullptr) // jesli lista jest pusta
     {
-        _head = nullptr;
+        _head == nullptr;
     }
 
     else
@@ -361,11 +360,34 @@ void List<T>::remove(const T& element)
         {
             tmp = tmp->_next;
         }
-        if(tmp->_previous == nullptr)
+
+        if(tmp->_previous == nullptr) //jesli chcemy usunac pierwszy element
         {
-            tmp->_next->_previous = nullptr;
-            _head=tmp -> _next;
-            tmp->_next = nullptr;
+            if(tmp->_next == nullptr) //jesli jest to jedyny element na liscie
+            {
+                _head = nullptr;
+                _tail = nullptr;
+            }
+            else
+            {
+                tmp->_next->_previous = nullptr;
+                _head = tmp->_next;
+                tmp->_next = nullptr;
+            }
+        }
+        else if(tmp->_next == nullptr) //jesli chcemy usunac ostatni element
+        {
+            if(tmp->_previous == nullptr) //jesli jest to jedyny element na liscie
+            {
+                _head = nullptr;
+                _tail = nullptr;
+            }
+            else
+            {
+                tmp->_previous->_next = nullptr;
+                _tail = tmp->_previous;
+                tmp->_previous = nullptr;
+            }
         }
         else
         {
@@ -373,7 +395,6 @@ void List<T>::remove(const T& element)
             tmp->_previous->_next = tmp->_next;
             tmp->_previous = nullptr;
             tmp->_next = nullptr;
-            tmp = nullptr;
         }
     }
 }
