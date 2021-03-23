@@ -5,6 +5,14 @@ template <typename T>
 class PriorityQueue
 {
   public:
+    typedef struct
+    {
+        int _priority;
+        T _data;
+    } prioData;
+
+    List<PriorityQueue<T>::prioData > prioQueue;
+
     void enqueue(const T& newElement, int priority);
     T dequeue();
 };
@@ -13,7 +21,8 @@ class PriorityQueue
 template <typename T>
 void PriorityQueue<T>::enqueue(const T& newElement, int priority)
 {
-  // TODO: implement
+
+
 }
 
 template <typename T>

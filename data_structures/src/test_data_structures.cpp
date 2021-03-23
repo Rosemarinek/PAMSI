@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
+#include <stdlib.h>
 
 #include "data_structures/list.hpp"
 #include "data_structures/map.hpp"
@@ -57,11 +58,16 @@ TEST_CASE("List/insert")
     list.insert(3, 1);
     list.insert(4, 0);
 
+
     REQUIRE(list[0] == 4);
     REQUIRE(list[1] == 1);
     REQUIRE(list[2] == 3);
     REQUIRE(list[3] == 2);
+
 }
+
+
+
 
 TEST_CASE("List/remove")
 {
@@ -80,21 +86,20 @@ TEST_CASE("List/remove")
 
     REQUIRE(list[0] == 3);
 }
-/*
-TEST_CASE("List/iterator")
-{
-    List<int> list;
-
-    list.pushBack(1);
-    list.pushBack(3);
-    list.pushBack(2);
-
-    std::sort(list.begin(), list.end());
-
-    REQUIRE(list[0] == 1);
-    REQUIRE(list[1] == 2);
-    REQUIRE(list[2] == 3);
-}*/
+//TEST_CASE("List/iterator")
+//{
+//    List<int> list;
+//
+//    list.pushBack(1);
+//    list.pushBack(3);
+//    list.pushBack(2);
+//
+//    std::sort(list.begin(), list.end());
+//
+//    REQUIRE(list[0] == 1);
+//    REQUIRE(list[1] == 2);
+//    REQUIRE(list[2] == 3);
+//}
 //
 //TEST_CASE("List/ConstIterator")
 //{
@@ -143,15 +148,15 @@ TEST_CASE("Queue")
     REQUIRE(queue.dequeue() == 3);
 }
 
-//TEST_CASE("PriorityQueue")
-//{
-//    PriorityQueue<int> queue;
-//
-//    queue.enqueue(1, 20);
-//    queue.enqueue(3, 5);
-//    queue.enqueue(2, 30);
-//
-//    REQUIRE(queue.dequeue() == 2);
-//    REQUIRE(queue.dequeue() == 1);
-//    REQUIRE(queue.dequeue() == 3);
-//}
+TEST_CASE("PriorityQueue")
+{
+    PriorityQueue<int> queue;
+
+    queue.enqueue(1, 20);
+    queue.enqueue(3, 5);
+    queue.enqueue(2, 30);
+
+    REQUIRE(queue.dequeue() == 2);
+    REQUIRE(queue.dequeue() == 1);
+    REQUIRE(queue.dequeue() == 3);
+}

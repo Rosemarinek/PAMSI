@@ -22,11 +22,11 @@ class List
       public:
         using difference_type = long;
         using value_type = T;
-        using pointer = const std::shared_ptr<T>; //ZMIANA
+        using pointer = const std::shared_ptr<T>; // ZMIANA
         using reference = const T&;
         using iterator_category = std::random_access_iterator_tag;
-
-        Iterator(std::shared_ptr<Node> node = nullptr); //ZMIANA
+        std::shared_ptr<Node> _currNode;
+        Iterator(std::shared_ptr<Node> node = nullptr); // ZMIANA
 
         Iterator operator++();
         Iterator operator--();
@@ -46,11 +46,11 @@ class List
       public:
         using difference_type = long;
         using value_type = T;
-        using pointer = const T*;
+        using pointer = const std::shared_ptr<T>;
         using reference = const T&;
         using iterator_category = std::random_access_iterator_tag;
 
-        ConstIterator(Node* node = nullptr);
+        ConstIterator(std::shared_ptr<Node> node = nullptr);
 
         ConstIterator operator++();
         ConstIterator operator--();
@@ -67,7 +67,6 @@ class List
 
     std::shared_ptr<Node> _head;
     std::shared_ptr<Node> _tail;
-    static std::shared_ptr<Node> _currNode;
 
     List();
 
@@ -80,6 +79,7 @@ class List
     ConstIterator cbegin() const;
     ConstIterator cend() const;
     T& operator[](int index);
+    int lastIndex(std::shared_ptr<Node> list);
 };
 
 /*konstruktor dla wezla*/
@@ -96,27 +96,25 @@ List<T>::List()
 {
     this->_head = nullptr;
     this->_tail = nullptr;
-   // this->_currNode = nullptr;
 }
 
 template <typename T>
 List<T>::Iterator::Iterator(typename std::shared_ptr<List<T>::Node> node)
 {
+    _currNode = node;
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator++()
 {
 
-    // TODO: implement
     return Iterator(_currNode->_next);
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator--()
 {
-    // TODO: implement
-    return Iterator();
+    return Iterator(_currNode->_previous);
 }
 
 template <typename T>
@@ -184,7 +182,7 @@ T& List<T>::Iterator::operator*()
 }
 
 template <typename T>
-List<T>::ConstIterator::ConstIterator(typename List<T>::Node* node)
+List<T>::ConstIterator::ConstIterator(typename std::shared_ptr<List<T>::Node> node)
 {
 }
 
@@ -318,6 +316,8 @@ void List<T>::insert(const T& newElement, int index)
     newElem = static_cast<std::shared_ptr<List<T>::Node>>(new List<T>::Node);
     newElem->_data = newElement;
 
+    int number = lastIndex(_head);
+
     if(_head == nullptr) // jesli lista jest pusta
     {
         _tail = newElem;
@@ -326,7 +326,8 @@ void List<T>::insert(const T& newElement, int index)
     else // jesli ma elementy
     {
         auto tmp = _head;
-        for(int i = 0; i < index; i++)
+
+        for(int i = 0; i < index && i < number; i++)
         {
             tmp = tmp->_next;
         }
@@ -334,6 +335,14 @@ void List<T>::insert(const T& newElement, int index)
         if(tmp->_previous == nullptr)
         {
             pushFront(newElement);
+        }
+        else if(index == number + 1)
+        {
+            pushBack(newElement);
+        }
+        else if(index > number + 1)
+        {
+            // TODO: wyrzucanie wyjatku
         }
         else
         {
@@ -350,7 +359,8 @@ void List<T>::remove(const T& element)
 {
     if(_head == nullptr) // jesli lista jest pusta
     {
-        _head == nullptr;
+        // TODO: Wyrzucanie wyjatku
+        std::cout << "There are no items to remove \n";
     }
 
     else
@@ -361,9 +371,9 @@ void List<T>::remove(const T& element)
             tmp = tmp->_next;
         }
 
-        if(tmp->_previous == nullptr) //jesli chcemy usunac pierwszy element
+        if(tmp->_previous == nullptr) // jesli chcemy usunac pierwszy element
         {
-            if(tmp->_next == nullptr) //jesli jest to jedyny element na liscie
+            if(tmp->_next == nullptr) // jesli jest to jedyny element na liscie
             {
                 _head = nullptr;
                 _tail = nullptr;
@@ -375,9 +385,9 @@ void List<T>::remove(const T& element)
                 tmp->_next = nullptr;
             }
         }
-        else if(tmp->_next == nullptr) //jesli chcemy usunac ostatni element
+        else if(tmp->_next == nullptr) // jesli chcemy usunac ostatni element
         {
-            if(tmp->_previous == nullptr) //jesli jest to jedyny element na liscie
+            if(tmp->_previous == nullptr) // jesli jest to jedyny element na liscie
             {
                 _head = nullptr;
                 _tail = nullptr;
@@ -442,6 +452,20 @@ T& List<T>::operator[](int index)
     element = tmp->_data;
 
     return element;
+}
+template <typename T>
+int List<T>::lastIndex(std::shared_ptr<Node> list) // funkcja zwraca nr indeksu ostatniego elementu na liscie
+{
+
+    int l_index = 0;
+
+    while(list->_next != nullptr)
+    {
+        list = list->_next;
+        l_index += 1;
+    }
+
+    return l_index;
 }
 
 #endif /* LIST_HPP_ */
