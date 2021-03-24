@@ -58,16 +58,11 @@ TEST_CASE("List/insert")
     list.insert(3, 1);
     list.insert(4, 0);
 
-
     REQUIRE(list[0] == 4);
     REQUIRE(list[1] == 1);
     REQUIRE(list[2] == 3);
     REQUIRE(list[3] == 2);
-
 }
-
-
-
 
 TEST_CASE("List/remove")
 {
@@ -86,7 +81,7 @@ TEST_CASE("List/remove")
 
     REQUIRE(list[0] == 3);
 }
-//TEST_CASE("List/iterator")
+// TEST_CASE("List/iterator")
 //{
 //    List<int> list;
 //
@@ -101,7 +96,7 @@ TEST_CASE("List/remove")
 //    REQUIRE(list[2] == 3);
 //}
 //
-//TEST_CASE("List/ConstIterator")
+// TEST_CASE("List/ConstIterator")
 //{
 //    List<int> list;
 //
@@ -128,11 +123,9 @@ TEST_CASE("Stack")
     stack.push(2);
     stack.push(3);
 
-
     REQUIRE(stack.pop() == 3);
     REQUIRE(stack.pop() == 2);
     REQUIRE(stack.pop() == 1);
-
 }
 
 TEST_CASE("Queue")
