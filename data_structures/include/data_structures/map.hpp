@@ -5,8 +5,8 @@ template <typename KeyType, typename ValueType>
 class Map
 {
 public:
-  Map() {}
-  Map(const Map& otherMap) { }
+  Map() {} //konstruktor
+  Map(const Map& otherMap) { } //konstruktor jednoparametryczny
 
   void insert(const KeyType& key ,const ValueType& value);
   ValueType& operator[](const KeyType& key);

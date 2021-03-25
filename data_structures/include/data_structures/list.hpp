@@ -19,14 +19,16 @@ class List
 
     class Iterator
     {
+        std::shared_ptr<Node> _currNode;
+
       public:
         using difference_type = long;
         using value_type = T;
-        using pointer = const std::shared_ptr<T>; // ZMIANA
+        using pointer = const std::shared_ptr<T>;
         using reference = const T&;
         using iterator_category = std::random_access_iterator_tag;
-        std::shared_ptr<Node> _currNode;
-        Iterator(std::shared_ptr<Node> node = nullptr); // ZMIANA
+
+        Iterator(std::shared_ptr<Node> node = nullptr);
 
         Iterator operator++();
         Iterator operator--();
@@ -43,6 +45,8 @@ class List
 
     class ConstIterator
     {
+        std::shared_ptr<Node> _currNode;
+
       public:
         using difference_type = long;
         using value_type = T;
@@ -65,9 +69,11 @@ class List
         const T& operator*();
     };
 
+  private:
     std::shared_ptr<Node> _head;
     std::shared_ptr<Node> _tail;
 
+  public:
     List();
     ~List();
 
@@ -80,7 +86,9 @@ class List
     ConstIterator cbegin() const;
     ConstIterator cend() const;
     T& operator[](int index);
-    int lastIndex(std::shared_ptr<Node> list);
+    // int lastIndex(std::shared_ptr<Node> list);
+    int lastIndex();
+    bool isEmpty();
 };
 
 /*konstruktor dla wezla*/
@@ -102,7 +110,7 @@ template <typename T>
 List<T>::~List()
 {
     std::shared_ptr<List<T>::Node> tmp;
-    while(_head->_next != nullptr)
+    while(_head != nullptr)
     {
         tmp = _head;
         _head = _head->_next;
@@ -110,7 +118,6 @@ List<T>::~List()
         tmp->_previous = nullptr;
     }
 
-    _head = nullptr;
     _tail = nullptr;
 }
 
@@ -332,8 +339,7 @@ void List<T>::insert(const T& newElement, int index)
     newElem = static_cast<std::shared_ptr<List<T>::Node>>(new List<T>::Node);
     newElem->_data = newElement;
 
-    int number = lastIndex(_head);
-
+    int number = lastIndex();
     if(_head == nullptr) // jesli lista jest pusta
     {
         _tail = newElem;
@@ -348,11 +354,11 @@ void List<T>::insert(const T& newElement, int index)
             tmp = tmp->_next;
         }
 
-        if(tmp->_previous == nullptr)
+        if(index == 0) // na poczatek/
         {
             pushFront(newElement);
         }
-        else if(index == number + 1)
+        else if(index == number + 1) // na koniec
         {
             pushBack(newElement);
         }
@@ -360,7 +366,7 @@ void List<T>::insert(const T& newElement, int index)
         {
             // TODO: wyrzucanie wyjatku
         }
-        else
+        else // gdzies w srodku
         {
             newElem->_previous = tmp->_previous;
             newElem->_next = tmp;
@@ -454,15 +460,40 @@ T& List<T>::operator[](int index)
 
     return element;
 }
+// template <typename T>
+// int List<T>::lastIndex(std::shared_ptr<Node> list) // funkcja zwraca nr indeksu ostatniego elementu na liscie
+//{
+//
+//    int l_index = 0;
+//
+//    while(list->_next != nullptr)
+//    {
+//        list = list->_next;
+//        l_index += 1;
+//    }
+//
+//    return l_index;
+//}
+
 template <typename T>
-int List<T>::lastIndex(std::shared_ptr<Node> list) // funkcja zwraca nr indeksu ostatniego elementu na liscie
+bool List<T>::isEmpty()
 {
 
+    if(_head == nullptr)
+        return true;
+    else
+        return false;
+}
+
+template <typename T>
+int List<T>::lastIndex() // funkcja zwraca nr indeksu ostatniego elementu na liscie
+{
+    auto tmp = _head;
     int l_index = 0;
 
-    while(list->_next != nullptr)
+    while(tmp->_next != nullptr)
     {
-        list = list->_next;
+        tmp = tmp->_next;
         l_index += 1;
     }
 

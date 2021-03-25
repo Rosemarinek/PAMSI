@@ -36,28 +36,29 @@ void PriorityQueue<T>::enqueue(const T& newElement, int priority)
     int index = 0;
     PriorityData element{newElement, priority};
 
-    if(_PrioQueue._head == nullptr)
-    {
-       _PrioQueue.pushFront(element);
-    }
 
+    if(_PrioQueue.isEmpty())
+    {
+        _PrioQueue.pushFront(element);
+    }
     else
     {
-        auto tmp = _PrioQueue[index];
-        if(_PrioQueue._head->_next==nullptr && element <tmp)
+
+        while(element < _PrioQueue[index] && index < _PrioQueue.lastIndex())
         {
-            _PrioQueue.pushBack(element);
+            index += 1;
+        }
+
+
+        if(element < _PrioQueue[index])
+        {
+            _PrioQueue.insert(element, index+1);
         }
         else
         {
-            while(element < tmp)
-            {
-                index += 1;
-                tmp = _PrioQueue[index];
-            }
             _PrioQueue.insert(element, index);
-        }
 
+        }
     }
 }
 
