@@ -69,6 +69,7 @@ class List
     std::shared_ptr<Node> _tail;
 
     List();
+    ~List();
 
     void pushBack(const T& newElement);
     void pushFront(const T& newElement);
@@ -90,12 +91,27 @@ List<T>::Node::Node()
     this->_previous = nullptr;
 }
 
-/*konstruktor dla listy*/
 template <typename T>
 List<T>::List()
 {
     this->_head = nullptr;
     this->_tail = nullptr;
+}
+
+template <typename T>
+List<T>::~List()
+{
+    std::shared_ptr<List<T>::Node> tmp;
+    while(_head->_next != nullptr)
+    {
+        tmp = _head;
+        _head = _head->_next;
+        tmp->_next = nullptr;
+        tmp->_previous = nullptr;
+    }
+
+    _head = nullptr;
+    _tail = nullptr;
 }
 
 template <typename T>
@@ -360,7 +376,7 @@ void List<T>::remove(const T& element)
     if(_head == nullptr) // jesli lista jest pusta
     {
         // TODO: Wyrzucanie wyjatku
-        std::cout << "There are no items to remove \n";
+        std::cerr << "There are no items to remove \n";
     }
 
     else
@@ -371,40 +387,25 @@ void List<T>::remove(const T& element)
             tmp = tmp->_next;
         }
 
-        if(tmp->_previous == nullptr) // jesli chcemy usunac pierwszy element
+        if(tmp->_previous == nullptr && tmp->_next == nullptr) // jesli chcemy usunac  jedyny element
         {
-            if(tmp->_next == nullptr) // jesli jest to jedyny element na liscie
-            {
-                _head = nullptr;
-                _tail = nullptr;
-            }
-            else
-            {
-                tmp->_next->_previous = nullptr;
-                _head = tmp->_next;
-                tmp->_next = nullptr;
-            }
+            _head = nullptr;
+            _tail = nullptr;
+        }
+        else if(tmp->_previous == nullptr) // jesli chcemy usunac pierwszy element
+        {
+            _head = tmp->_next;
+            tmp->_next->_previous = nullptr;
         }
         else if(tmp->_next == nullptr) // jesli chcemy usunac ostatni element
         {
-            if(tmp->_previous == nullptr) // jesli jest to jedyny element na liscie
-            {
-                _head = nullptr;
-                _tail = nullptr;
-            }
-            else
-            {
-                tmp->_previous->_next = nullptr;
-                _tail = tmp->_previous;
-                tmp->_previous = nullptr;
-            }
+            tmp->_previous->_next = nullptr;
+            _tail = tmp->_previous;
         }
         else
         {
             tmp->_next->_previous = tmp->_previous;
             tmp->_previous->_next = tmp->_next;
-            tmp->_previous = nullptr;
-            tmp->_next = nullptr;
         }
     }
 }

@@ -122,7 +122,9 @@ TEST_CASE("Stack")
     stack.push(1);
     stack.push(2);
     stack.push(3);
+    stack.push(4);
 
+    REQUIRE(stack.pop() == 4);
     REQUIRE(stack.pop() == 3);
     REQUIRE(stack.pop() == 2);
     REQUIRE(stack.pop() == 1);
