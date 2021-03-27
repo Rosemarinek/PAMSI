@@ -86,12 +86,10 @@ class List
     ConstIterator cbegin() const;
     ConstIterator cend() const;
     T& operator[](int index);
-    // int lastIndex(std::shared_ptr<Node> list);
     int lastIndex();
     bool isEmpty();
 };
 
-/*konstruktor dla wezla*/
 template <typename T>
 List<T>::Node::Node()
 {
@@ -130,202 +128,269 @@ List<T>::Iterator::Iterator(typename std::shared_ptr<List<T>::Node> node)
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator++()
 {
-
-    return Iterator(_currNode->_next);
+    _currNode = _currNode->_next;
+    return Iterator{_currNode};
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator--()
 {
-    return Iterator(_currNode->_previous);
+    _currNode = _currNode->_previous;
+    return Iterator{_currNode};
 }
 
 template <typename T>
 bool List<T>::Iterator::operator==(const Iterator& other) const
 {
-    // TODO: implement
-    return true;
+
+    return _currNode == other._currNode;
 }
 
 template <typename T>
 bool List<T>::Iterator::operator!=(const Iterator& other) const
 {
-    // TODO: implement
-    return true;
+    auto it = Iterator(_currNode);
+    return !(it == other);
 }
 
 template <typename T>
 bool List<T>::Iterator::operator>(const Iterator& other) const
 {
-    // TODO: implement
+    auto tmp = _currNode;
+    while(tmp != nullptr)
+    {
+        if(tmp == other._currNode)
+        {
+            return false;
+        }
+        tmp = tmp->_next;
+    }
     return true;
 }
 
 template <typename T>
 bool List<T>::Iterator::operator<(const Iterator& other) const
 {
-    // TODO: implement
-    return true;
+    auto it = Iterator(_currNode);
+    return !(it > other);
 }
 
 template <typename T>
 typename List<T>::Iterator::difference_type List<T>::Iterator::operator-(const Iterator& other) const
 {
-    // TODO: implement
-    return 0;
+    auto it1 = Iterator(_currNode);
+    auto it2 = Iterator(other);
+    int counter = 0;
+
+    while(it1 != it2)
+    {
+        if(it1 < it2)
+        {
+            ++it1;
+            ++counter;
+        }
+        else
+        {
+            ++it2;
+            ++counter;
+        }
+    }
+    return counter;
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator+(difference_type diff) const
 {
-    // TODO: implement
-    return Iterator();
+    auto tmp = Iterator(_currNode);
+
+    for(int i = 0; i < diff; i++)
+    {
+        ++tmp;
+    }
+    return Iterator{tmp};
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator-(difference_type diff) const
 {
-    // TODO: implement
-    return Iterator();
+    auto tmp = Iterator(_currNode);
+
+    for(int i = 0; i < diff; i++)
+    {
+        --tmp;
+    }
+    return Iterator{tmp};
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::Iterator::operator[](std::size_t i)
 {
-    // TODO: implement
-    return Iterator();
+    auto it = Iterator(_currNode);
+
+    it = it + i;
+
+    return Iterator{it};
 }
 
 template <typename T>
 T& List<T>::Iterator::operator*()
 {
-    // TODO: implement
-    static T element;
-    return element;
+    return _currNode->_data;
 }
 
 template <typename T>
 List<T>::ConstIterator::ConstIterator(typename std::shared_ptr<List<T>::Node> node)
 {
+    _currNode = node;
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::ConstIterator::operator++()
 {
-    // TODO: implement
-    return ConstIterator();
+    _currNode = _currNode->_next;
+    return ConstIterator{_currNode};
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::ConstIterator::operator--()
 {
-    // TODO: implement
-    return ConstIterator();
+    _currNode = _currNode->_previous;
+    return ConstIterator{_currNode};
 }
 
 template <typename T>
 bool List<T>::ConstIterator::operator==(const ConstIterator& other) const
 {
-    // TODO: implement
-    return true;
+    return _currNode == other._currNode;
 }
 
 template <typename T>
 bool List<T>::ConstIterator::operator!=(const ConstIterator& other) const
 {
-    // TODO: implement
-    return true;
+    auto it = ConstIterator(_currNode);
+    return !(it == other);
 }
 
 template <typename T>
 bool List<T>::ConstIterator::operator>(const ConstIterator& other) const
 {
-    // TODO: implement
+    auto tmp = _currNode;
+    while(tmp != nullptr)
+    {
+        if(tmp == other._currNode)
+        {
+            return false;
+        }
+        tmp = tmp->_next;
+    }
     return true;
 }
 
 template <typename T>
 bool List<T>::ConstIterator::operator<(const ConstIterator& other) const
 {
-    // TODO: implement
-    return true;
+    auto it = ConstIterator(_currNode);
+    return !(it > other);
 }
 
 template <typename T>
 typename List<T>::ConstIterator::difference_type List<T>::ConstIterator::operator-(const ConstIterator& other) const
 {
-    // TODO: implement
-    return 0;
+    auto it1 = ConstIterator(_currNode);
+    auto it2 = ConstIterator(other);
+    int counter = 0;
+
+    while(it1 != it2)
+    {
+        if(it1 < it2)
+        {
+            ++it1;
+            ++counter;
+        }
+        else
+        {
+            ++it2;
+            ++counter;
+        }
+    }
+    return counter;
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::ConstIterator::operator+(difference_type diff) const
 {
-    // TODO: implement
-    return Iterator();
+    auto tmp = ConstIterator(_currNode);
+
+    for(int i = 0; i < diff; i++)
+    {
+        ++tmp;
+    }
+    return Iterator{tmp};
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::ConstIterator::operator-(difference_type diff) const
 {
-    // TODO: implement
-    return ConstIterator();
+    auto tmp = ConstIterator(_currNode);
+
+    for(int i = 0; i < diff; i++)
+    {
+        --tmp;
+    }
+    return Iterator{tmp};
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::ConstIterator::operator[](std::size_t i)
 {
-    // TODO: implement
-    return Iterator();
+    auto it = ConstIterator(_currNode);
+
+    it = it + i;
+
+    return Iterator{it};
 }
 
 template <typename T>
 const T& List<T>::ConstIterator::operator*()
 {
-    // TODO: implement
-    static T element;
-    return element;
+    return _currNode->_data;
 }
 
 template <typename T>
 void List<T>::pushBack(const T& newElement)
 {
-    // tworzenie nowego elementu
     std::shared_ptr<Node> newElem;
     newElem = static_cast<std::shared_ptr<List<T>::Node>>(new List<T>::Node);
     newElem->_data = newElement;
 
     // TODO: wyrzucanie wyjatkow
 
-    if(_head == nullptr) // jesli lista jest pusta
+    if(isEmpty())
     {
         _tail = newElem;
         _head = newElem;
     }
-    else // jesli na liscie sa jakies elementy
+    else
     {
-
-        newElem->_previous = _tail; // niech previous wskazuje na to na co tail
-        _tail->_next = newElem;     // to na co wskazuje tail, niech wskazuje na newELem
-
-        _tail = newElem; // niech tail wskazuje na newElem
+        newElem->_previous = _tail;
+        _tail->_next = newElem;
+        _tail = newElem;
     }
 }
 
 template <typename T>
 void List<T>::pushFront(const T& newElement)
 {
-    // tworzenie nowego elementu
     std::shared_ptr<Node> newElem;
     newElem = static_cast<std::shared_ptr<List<T>::Node>>(new List<T>::Node);
     newElem->_data = newElement;
 
-    if(_head == nullptr) // jesli lista jest pusta
+    if(isEmpty())
     {
         _tail = newElem;
         _head = newElem;
     }
-    else // jesli na liscie sa jakies elementy
+    else
     {
         _head->_previous = newElem;
         newElem->_next = _head;
@@ -340,12 +405,12 @@ void List<T>::insert(const T& newElement, int index)
     newElem->_data = newElement;
 
     int number = lastIndex();
-    if(_head == nullptr) // jesli lista jest pusta
+    if(isEmpty())
     {
         _tail = newElem;
         _head = newElem;
     }
-    else // jesli ma elementy
+    else
     {
         auto tmp = _head;
 
@@ -354,11 +419,11 @@ void List<T>::insert(const T& newElement, int index)
             tmp = tmp->_next;
         }
 
-        if(index == 0) // na poczatek/
+        if(index == 0)
         {
             pushFront(newElement);
         }
-        else if(index == number + 1) // na koniec
+        else if(index == number + 1)
         {
             pushBack(newElement);
         }
@@ -366,7 +431,7 @@ void List<T>::insert(const T& newElement, int index)
         {
             // TODO: wyrzucanie wyjatku
         }
-        else // gdzies w srodku
+        else
         {
             newElem->_previous = tmp->_previous;
             newElem->_next = tmp;
@@ -379,7 +444,7 @@ void List<T>::insert(const T& newElement, int index)
 template <typename T>
 void List<T>::remove(const T& element)
 {
-    if(_head == nullptr) // jesli lista jest pusta
+    if(isEmpty())
     {
         // TODO: Wyrzucanie wyjatku
         std::cerr << "There are no items to remove \n";
@@ -393,17 +458,17 @@ void List<T>::remove(const T& element)
             tmp = tmp->_next;
         }
 
-        if(tmp->_previous == nullptr && tmp->_next == nullptr) // jesli chcemy usunac  jedyny element
+        if(tmp->_previous == nullptr && tmp->_next == nullptr)
         {
             _head = nullptr;
             _tail = nullptr;
         }
-        else if(tmp->_previous == nullptr) // jesli chcemy usunac pierwszy element
+        else if(tmp->_previous == nullptr)
         {
             _head = tmp->_next;
             tmp->_next->_previous = nullptr;
         }
-        else if(tmp->_next == nullptr) // jesli chcemy usunac ostatni element
+        else if(tmp->_next == nullptr)
         {
             tmp->_previous->_next = nullptr;
             _tail = tmp->_previous;
@@ -419,30 +484,25 @@ void List<T>::remove(const T& element)
 template <typename T>
 typename List<T>::Iterator List<T>::begin()
 {
-    // TODO: implement
-    return Iterator();
+    return List::Iterator{_head};
 }
 
 template <typename T>
 typename List<T>::Iterator List<T>::end()
 {
-    // TODO: implement
-    return Iterator();
+    return List::Iterator{nullptr};
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::cbegin() const
 {
-
-    // TODO: implement
-    return ConstIterator();
+    return List::ConstIterator(_head);
 }
 
 template <typename T>
 typename List<T>::ConstIterator List<T>::cend() const
 {
-    return ConstIterator();
-    // TODO: implement
+    return List::ConstIterator(nullptr);
 }
 
 template <typename T>
@@ -460,20 +520,6 @@ T& List<T>::operator[](int index)
 
     return element;
 }
-// template <typename T>
-// int List<T>::lastIndex(std::shared_ptr<Node> list) // funkcja zwraca nr indeksu ostatniego elementu na liscie
-//{
-//
-//    int l_index = 0;
-//
-//    while(list->_next != nullptr)
-//    {
-//        list = list->_next;
-//        l_index += 1;
-//    }
-//
-//    return l_index;
-//}
 
 template <typename T>
 bool List<T>::isEmpty()

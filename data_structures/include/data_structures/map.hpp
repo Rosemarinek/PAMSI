@@ -4,36 +4,37 @@
 template <typename KeyType, typename ValueType>
 class Map
 {
-public:
-  Map() {} //konstruktor
-  Map(const Map& otherMap) { } //konstruktor jednoparametryczny
+    std::array<ValueType, 1000> tab;
 
-  void insert(const KeyType& key ,const ValueType& value);
-  ValueType& operator[](const KeyType& key);
-  void remove(const KeyType& key);
+  public:
+    Map() {}
+    Map(const Map& otherMap) {}
+    void insert(const KeyType& key, const ValueType& value);
+    ValueType& operator[](const KeyType& key);
+    void remove(const KeyType& key);
+    ~Map() {}
 };
-
 
 template <typename KeyType, typename ValueType>
 void Map<KeyType, ValueType>::insert(const KeyType& key, const ValueType& value)
 {
-  // TODO: implement
+    // TODO: implement
 }
 
 template <typename KeyType, typename ValueType>
-ValueType &Map<KeyType, ValueType>::operator[](const KeyType &key) {
+ValueType& Map<KeyType, ValueType>::operator[](const KeyType& key)
+{
 
-  // TODO: implement
-  static ValueType value;
-  return value;
-
+    // TODO: implement
+    static ValueType value;
+    return value;
 }
 
 template <typename KeyType, typename ValueType>
-void Map<KeyType, ValueType>::remove(const KeyType &key)
-    {
+void Map<KeyType, ValueType>::remove(const KeyType& key)
+{
 
-  // TODO: implement
-    }
+    // TODO: implement
+}
 
 #endif /* MAP_HPP_ */

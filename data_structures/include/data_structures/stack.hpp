@@ -27,5 +27,4 @@ T Stack<T>::pop()
     return T(rem);
 }
 
-
 #endif /* STACK_HPP_ */

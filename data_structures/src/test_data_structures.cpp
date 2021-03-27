@@ -10,22 +10,22 @@
 
 using namespace std::string_literals;
 
-/*TEST_CASE("Map", "insert/operator[]")
-{
-    Map<int, std::string> hashArray;
-
-    std::map<int, std::string> refHashArray = {{1, "one"s}, {2, "two"s}, {3, "three"s}};
-
-    for(auto& keyValue : refHashArray)
-    {
-        hashArray.insert(keyValue.first, keyValue.second);
-    }
-
-    for(auto& keyValue : refHashArray)
-    {
-        REQUIRE(keyValue.second == hashArray[keyValue.first]);
-    }
-}*/
+// TEST_CASE("Map", "insert/operator[]")
+//{
+//    Map<int, std::string> hashArray;
+//
+//    std::map<int, std::string> refHashArray = {{1, "one"s}, {2, "two"s}, {3, "three"s}};
+//
+//    for(auto& keyValue : refHashArray)
+//    {
+//        hashArray.insert(keyValue.first, keyValue.second);
+//    }
+//
+//    for(auto& keyValue : refHashArray)
+//    {
+//        REQUIRE(keyValue.second == hashArray[keyValue.first]);
+//    }
+//}
 
 TEST_CASE("List/pushFront")
 {
@@ -81,39 +81,38 @@ TEST_CASE("List/remove")
 
     REQUIRE(list[0] == 3);
 }
-// TEST_CASE("List/iterator")
-//{
-//    List<int> list;
-//
-//    list.pushBack(1);
-//    list.pushBack(3);
-//    list.pushBack(2);
-//
-//    std::sort(list.begin(), list.end());
-//
-//    REQUIRE(list[0] == 1);
-//    REQUIRE(list[1] == 2);
-//    REQUIRE(list[2] == 3);
-//}
-//
-// TEST_CASE("List/ConstIterator")
-//{
-//    List<int> list;
-//
-//    std::array<int, 3> refArray = {1, 2, 3};
-//
-//    for(auto& element : refArray)
-//    {
-//        list.pushBack(element);
-//    }
-//
-//    int index = 0;
-//    for(auto it = list.cbegin(); it != list.cend(); ++it)
-//    {
-//        REQUIRE(*it == refArray[index++]);
-//    }
-//}
-//
+TEST_CASE("List/iterator")
+{
+    List<int> list;
+
+    list.pushBack(1);
+    list.pushBack(3);
+    list.pushBack(2);
+
+    std::sort(list.begin(), list.end());
+
+    REQUIRE(list[0] == 1);
+    REQUIRE(list[1] == 2);
+    REQUIRE(list[2] == 3);
+}
+
+TEST_CASE("List/ConstIterator")
+{
+    List<int> list;
+
+    std::array<int, 3> refArray = {1, 2, 3};
+
+    for(auto& element : refArray)
+    {
+        list.pushBack(element);
+    }
+
+    int index = 0;
+    for(auto it = list.cbegin(); it != list.cend(); ++it)
+    {
+        REQUIRE(*it == refArray[index++]);
+    }
+}
 
 TEST_CASE("Stack")
 {
@@ -122,7 +121,6 @@ TEST_CASE("Stack")
     stack.push(1);
     stack.push(2);
     stack.push(3);
-
 
     REQUIRE(stack.pop() == 3);
     REQUIRE(stack.pop() == 2);

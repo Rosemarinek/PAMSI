@@ -36,7 +36,6 @@ void PriorityQueue<T>::enqueue(const T& newElement, int priority)
     int index = 0;
     PriorityData element{newElement, priority};
 
-
     if(_PrioQueue.isEmpty())
     {
         _PrioQueue.pushFront(element);
@@ -49,15 +48,13 @@ void PriorityQueue<T>::enqueue(const T& newElement, int priority)
             index += 1;
         }
 
-
         if(element < _PrioQueue[index])
         {
-            _PrioQueue.insert(element, index+1);
+            _PrioQueue.insert(element, index + 1);
         }
         else
         {
             _PrioQueue.insert(element, index);
-
         }
     }
 }
