@@ -13,7 +13,7 @@ class PriorityQueue
 
         bool operator!=(const PriorityData& otherPriorityData) const
         {
-            return (this->_priority != otherPriorityData._priority && this->_prioData != otherPriorityData._priority);
+            return (this->_priority != otherPriorityData._priority && this->_prioData != otherPriorityData._prioData); //??
         }
 
         bool operator<(const PriorityData& otherPriorityData) const
@@ -36,34 +36,47 @@ void PriorityQueue<T>::enqueue(const T& newElement, int priority)
     int index = 0;
     PriorityData element{newElement, priority};
 
-    if(_PrioQueue.isEmpty())
+    try
     {
-        _PrioQueue.pushFront(element);
-    }
-    else
-    {
-
-        while(element < _PrioQueue[index] && index < _PrioQueue.lastIndex())
+        if(_PrioQueue.isEmpty())
         {
-            index += 1;
-        }
-
-        if(element < _PrioQueue[index])
-        {
-            _PrioQueue.insert(element, index + 1);
+            _PrioQueue.pushFront(element);
         }
         else
         {
-            _PrioQueue.insert(element, index);
+
+            while(element < _PrioQueue[index] && index < _PrioQueue.lastIndex())
+            {
+                index += 1;
+            }
+
+            if(element < _PrioQueue[index])
+            {
+                _PrioQueue.insert(element, index + 1);
+            }
+            else
+            {
+                _PrioQueue.insert(element, index);
+            }
         }
+    }
+    catch(const char* err)
+    {
+        std::cerr<<err;
     }
 }
 
 template <typename T>
 T PriorityQueue<T>::dequeue()
 {
-
     PriorityData rem = _PrioQueue[0];
-    _PrioQueue.remove(_PrioQueue[0]);
+    try
+    {
+        _PrioQueue.removeOne(_PrioQueue[0]);
+    }
+    catch(const char* err)
+    {
+        std::cerr<<err;
+    }
     return T(rem._prioData);
 }

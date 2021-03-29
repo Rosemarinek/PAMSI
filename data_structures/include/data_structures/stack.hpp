@@ -9,7 +9,6 @@ class Stack
     List<T> _Stack;
     void push(const T& newElement);
     T pop();
-    bool Empty();
 };
 
 template <typename T>
@@ -22,8 +21,14 @@ template <typename T>
 T Stack<T>::pop()
 {
     T rem = _Stack[0];
-    _Stack.remove(_Stack[0]);
-
+    try
+    {
+        _Stack.removeOne(_Stack[0]);
+    }
+    catch(const char* err)
+    {
+        std::cerr<<err;
+    }
     return T(rem);
 }
 

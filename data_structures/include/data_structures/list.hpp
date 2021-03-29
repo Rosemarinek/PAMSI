@@ -1,7 +1,7 @@
 #ifndef LIST_HPP_
 #define LIST_HPP_
 #include <memory>
-//#include <stdexcept>
+#include <stdexcept>
 
 template <typename T>
 class List
@@ -80,6 +80,7 @@ class List
     void pushBack(const T& newElement);
     void pushFront(const T& newElement);
     void insert(const T& newElement, int index);
+    void removeOne(const T& element);
     void remove(const T& element);
     Iterator begin();
     Iterator end();
@@ -363,8 +364,6 @@ void List<T>::pushBack(const T& newElement)
     newElem = static_cast<std::shared_ptr<List<T>::Node>>(new List<T>::Node);
     newElem->_data = newElement;
 
-    // TODO: wyrzucanie wyjatkow
-
     if(isEmpty())
     {
         _tail = newElem;
@@ -429,7 +428,7 @@ void List<T>::insert(const T& newElement, int index)
         }
         else if(index > number + 1)
         {
-            // TODO: wyrzucanie wyjatku
+            throw std::invalid_argument("Out of arrange");
         }
         else
         {
@@ -442,12 +441,11 @@ void List<T>::insert(const T& newElement, int index)
 }
 
 template <typename T>
-void List<T>::remove(const T& element)
+void List<T>::removeOne(const T& element)
 {
     if(isEmpty())
     {
-        // TODO: Wyrzucanie wyjatku
-        std::cerr << "There are no items to remove \n";
+        throw std::logic_error("There is no element to remove");
     }
 
     else
@@ -480,6 +478,25 @@ void List<T>::remove(const T& element)
         }
     }
 }
+
+template <typename T>
+void List<T>::remove(const T& element)
+{
+    auto tmp=_head;
+    while(tmp->_next!= nullptr)
+    {
+        if(tmp->_data==element)
+        {
+            removeOne(element);
+        }
+        tmp=tmp->_next;
+    }
+
+}
+
+
+
+
 
 template <typename T>
 typename List<T>::Iterator List<T>::begin()
@@ -532,7 +549,7 @@ bool List<T>::isEmpty()
 }
 
 template <typename T>
-int List<T>::lastIndex() // funkcja zwraca nr indeksu ostatniego elementu na liscie
+int List<T>::lastIndex()
 {
     auto tmp = _head;
     int l_index = 0;
@@ -545,5 +562,6 @@ int List<T>::lastIndex() // funkcja zwraca nr indeksu ostatniego elementu na lis
 
     return l_index;
 }
+
 
 #endif /* LIST_HPP_ */

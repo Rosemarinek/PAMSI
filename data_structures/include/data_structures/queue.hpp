@@ -21,7 +21,14 @@ template <typename T>
 T Queue<T>::dequeue()
 {
     T rem = _Queue[0];
-    _Queue.remove(_Queue[0]);
+    try
+    {
+        _Queue.removeOne(_Queue[0]);
+    }
+    catch(const char* err)
+    {
+        std::cerr<<err;
+    }
     return T(rem);
 }
 
