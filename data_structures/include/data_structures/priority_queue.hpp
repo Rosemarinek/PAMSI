@@ -28,7 +28,6 @@ class PriorityQueue
     T dequeue();
 };
 
-#endif /* PRIORITY_QUEUE_HPP_ */
 
 template <typename T>
 void PriorityQueue<T>::enqueue(const T& newElement, int priority)
@@ -80,3 +79,6 @@ T PriorityQueue<T>::dequeue()
     }
     return T(rem._prioData);
 }
+
+
+#endif /* PRIORITY_QUEUE_HPP_ */

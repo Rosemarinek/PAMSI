@@ -72,8 +72,9 @@ ValueType& Map<KeyType, ValueType>::operator[](const KeyType& key)
 template <typename KeyType, typename ValueType>
 void Map<KeyType, ValueType>::remove(const KeyType& key)
 {
-    int index = Hash(key);
+    auto index = Hash(key);
     _Map[index] = 0;
+    _MapBool[index] = false;
 }
 
 template <typename KeyType, typename ValueType>
