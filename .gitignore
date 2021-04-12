@@ -1,0 +1,5 @@
+data_structures/build/
+data_structures/cmake-build-debug/
+data_structures/.idea/
+sort/cmake-build-debug/
+sort/.idea/
