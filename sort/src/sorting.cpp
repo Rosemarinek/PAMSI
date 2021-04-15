@@ -4,7 +4,7 @@ void bubbleSort(std::vector<int>& tab)
 {
 
     for(int j = 0; j < (size(tab) - 1); j++)
-        for(int i = 0; i < (size(tab) - 1); i++)
+        for(int i = 0; i < (size(tab) - j - 1); i++)
             if(tab[i] > tab[i + 1])
                 std::swap(tab[i], tab[i + 1]);
 }
@@ -46,6 +46,46 @@ void quickSort(std::vector<int>& tab, int left, int right)
         quickSort(tab, i, right);
     }
 }
+
+void pessQuickSort(std::vector<int>& tab, int left, int right)
+{
+    int pivot = tab[left];
+
+    int i = left;
+    int j = right;
+
+    while(i <= j)
+    {
+        while(tab[i] < pivot)
+        {
+            i++;
+        }
+
+        while(tab[j] > pivot)
+        {
+            j--;
+        }
+
+        if(i <= j)
+        {
+            std::swap(tab[i], tab[j]);
+            i++;
+            j--;
+        }
+    }
+
+    if(left < j)
+    {
+        pessQuickSort(tab, left, j);
+    }
+
+    if(i < right)
+    {
+        pessQuickSort(tab, i, right);
+    }
+}
+
+
 
 void merge(std::vector<int>& tab, int left, int middle, int right)
 {

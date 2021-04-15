@@ -1,102 +1,61 @@
-#include "timer.hpp"
 #include "sorting/sorting.hpp"
+#include "timer.hpp"
 
-#include <thread>
+#include <algorithm>
+#include <ctime>
+#include <fstream>
 #include <iostream>
 
+#define FIVE 5000
 #define TEN_THOUSAND 10000
-#define HUNDRED_THOUSAND 100000
+#define FIFTY 50000
+#define TWO_HUNDRED 200000
 #define MILLION 1000000
 
 using namespace std::chrono_literals;
 
 int main(int argc, char* argv[])
 {
-    std::vector<int> b_ten(TEN_THOUSAND);
-    std::vector<int> b_hundred(HUNDRED_THOUSAND);
-    std::vector<int> b_million(MILLION);
+    srand(time(NULL));
 
-    std::vector<int> q_ten(TEN_THOUSAND);
-    std::vector<int> q_hundred(HUNDRED_THOUSAND);
-    std::vector<int> q_million(MILLION);
+    int size = FIVE;
+    std::ofstream result;
+    result.open("../results/quick_result.csv");
 
-    std::vector<int> m_ten(TEN_THOUSAND);
-    std::vector<int> m_hundred(HUNDRED_THOUSAND);
-    std::vector<int> m_million(MILLION);
-
-    for(int i = 0; i < TEN_THOUSAND ; i++)
+    for(int k = 0; k < 20; k++)
     {
-        b_ten[i] = rand();
-        q_ten[i]=b_ten[i];
-        m_ten[i]=b_ten[i];
+        for(int i = 0; i < 20; i++)
+        {
+            std::vector<int> data_vector(size);
+
+            for(int& j : data_vector)
+            {
+                j = rand() % 3000000;
+            }
+
+            Timer timer;
+
+            timer.start();
+            quickSort(data_vector, 0, size - 1);
+            timer.stop();
+            std::cout << "Quick sort (nlogn) for " << size << " elements in " << timer.sInterval() << "s\n";
+
+            if(result.good())
+            {
+                result << timer.sInterval() << " " << size << "\n";
+            }
+            else
+                std::cout << "File error \n";
+
+            size = size + FIVE;
+        }
+        size = FIVE;
     }
-
-    for(int i = 0; i < HUNDRED_THOUSAND ; i++)
-    {
-        b_hundred[i] = rand();
-        q_hundred[i]=b_hundred[i];
-        m_hundred[i]=b_hundred[i];
-    }
-
-    for(int i = 0; i < MILLION ; i++)
-    {
-        b_million[i] = rand();
-        q_million[i]=b_million[i];
-        m_million[i]=b_million[i];
-    }
-
-    Timer timer;
-
-    timer.start();
-    quickSort(q_ten,0,size(q_ten)-1);
-    timer.stop();
-    std::cout << "Quick sort for 10 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    timer.start();
-    quickSort(q_hundred,0,size(q_hundred)-1);
-    timer.stop();
-    std::cout << "Quick sort for 100 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    timer.start();
-    quickSort(q_million,0,size(q_million)-1);
-    timer.stop();
-    std::cout << "Quick sort for 1 000 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    std::cout<<"\n";
-
-    timer.start();
-    mergeSort(q_ten,0,size(q_ten)-1);
-    timer.stop();
-    std::cout << "Merge sort for 10 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    timer.start();
-    mergeSort(q_hundred,0,size(q_hundred)-1);
-    timer.stop();
-    std::cout << "Merge sort for 100 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    timer.start();
-    mergeSort(q_million,0,size(q_million)-1);
-    timer.stop();
-    std::cout << "Merge sort for 1 000 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    std::cout<<"\n";
+    result.close();
 
 
-    timer.start();
-    bubbleSort(b_ten);
-    timer.stop();
-    std::cout << "Bubble sort for 10 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    timer.start();
-    bubbleSort(b_hundred);
-    timer.stop();
-    std::cout << "Bubble sort for 100 0000 elements: waited for " << timer.sInterval() << "s\n";
-
-    timer.start();
-    bubbleSort(b_million);
-    timer.stop();
-    std::cout << "Bubble sort for 1 000 0000 elements: waited for " << timer.sInterval() << "s\n";
-
+    //    std::sort(pq_ten.begin(), pq_ten.end());
+    //    std::reverse(pq_ten.begin(), pq_ten.end());
 
     return 0;
 }
