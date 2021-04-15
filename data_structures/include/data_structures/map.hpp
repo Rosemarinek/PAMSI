@@ -2,14 +2,14 @@
 #define MAP_HPP_
 #define SIZE 1000
 
+int Hash(std::string str);
+int Hash(int intg);
+int Hash(char character);
+
 template <typename KeyType, typename ValueType>
 class Map
 {
   public:
-    int Hash(std::string str);
-    int Hash(int intg);
-    int Hash(char character);
-
     Map();
     Map(const Map& otherMap);
     void insert(const KeyType& key, const ValueType& value);
@@ -21,8 +21,8 @@ class Map
     std::array<bool, SIZE> _MapBool;
 };
 
-template <typename KeyType, typename ValueType>
-int Map<KeyType, ValueType>::Hash(std::string str)
+
+int Hash(std::string str)
 {
     int result = 0;
     for(auto i = 0; i < str.length(); i++)
@@ -32,14 +32,14 @@ int Map<KeyType, ValueType>::Hash(std::string str)
     return result % 1000;
 }
 
-template <typename KeyType, typename ValueType>
-int Map<KeyType, ValueType>::Hash(int intg)
+
+int Hash(int intg)
 {
     return intg % 1000;
 }
 
-template <typename KeyType, typename ValueType>
-int Map<KeyType, ValueType>::Hash(char character)
+
+int Hash(char character)
 {
     int result = 0;
     result += static_cast<int>(character);

@@ -15,6 +15,7 @@ class List
         std::shared_ptr<Node> _previous;
 
         Node();
+
     };
 
     class Iterator
@@ -98,12 +99,14 @@ List<T>::Node::Node()
     this->_previous = nullptr;
 }
 
+
 template <typename T>
 List<T>::List()
 {
     this->_head = nullptr;
     this->_tail = nullptr;
 }
+
 
 template <typename T>
 List<T>::~List()
@@ -326,7 +329,7 @@ typename List<T>::ConstIterator List<T>::ConstIterator::operator+(difference_typ
     {
         ++tmp;
     }
-    return Iterator{tmp};
+    return ConstIterator{tmp};
 }
 
 template <typename T>
@@ -338,7 +341,7 @@ typename List<T>::ConstIterator List<T>::ConstIterator::operator-(difference_typ
     {
         --tmp;
     }
-    return Iterator{tmp};
+    return ConstIterator{tmp};
 }
 
 template <typename T>
@@ -348,7 +351,7 @@ typename List<T>::ConstIterator List<T>::ConstIterator::operator[](std::size_t i
 
     it = it + i;
 
-    return Iterator{it};
+    return ConstIterator{it};
 }
 
 template <typename T>
@@ -428,7 +431,7 @@ void List<T>::insert(const T& newElement, int index)
         }
         else if(index > number + 1)
         {
-            throw std::invalid_argument("Out of arrange");
+            throw std::invalid_argument("Out of range");
         }
         else
         {
@@ -482,21 +485,16 @@ void List<T>::removeOne(const T& element)
 template <typename T>
 void List<T>::remove(const T& element)
 {
-    auto tmp=_head;
-    while(tmp->_next!= nullptr)
+    auto tmp = _head;
+    while(tmp->_next != nullptr)
     {
-        if(tmp->_data==element)
+        if(tmp->_data == element)
         {
             removeOne(element);
         }
-        tmp=tmp->_next;
+        tmp = tmp->_next;
     }
-
 }
-
-
-
-
 
 template <typename T>
 typename List<T>::Iterator List<T>::begin()
@@ -562,6 +560,5 @@ int List<T>::lastIndex()
 
     return l_index;
 }
-
 
 #endif /* LIST_HPP_ */

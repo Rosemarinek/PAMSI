@@ -13,7 +13,8 @@ class PriorityQueue
 
         bool operator!=(const PriorityData& otherPriorityData) const
         {
-            return (this->_priority != otherPriorityData._priority && this->_prioData != otherPriorityData._prioData); //??
+            return (this->_priority != otherPriorityData._priority &&
+                    this->_prioData != otherPriorityData._prioData); //??
         }
 
         bool operator<(const PriorityData& otherPriorityData) const
@@ -27,7 +28,6 @@ class PriorityQueue
     void enqueue(const T& newElement, int priority);
     T dequeue();
 };
-
 
 template <typename T>
 void PriorityQueue<T>::enqueue(const T& newElement, int priority)
@@ -61,7 +61,7 @@ void PriorityQueue<T>::enqueue(const T& newElement, int priority)
     }
     catch(const char* err)
     {
-        std::cerr<<err;
+        std::cerr << err;
     }
 }
 
@@ -69,16 +69,9 @@ template <typename T>
 T PriorityQueue<T>::dequeue()
 {
     PriorityData rem = _PrioQueue[0];
-    try
-    {
-        _PrioQueue.removeOne(_PrioQueue[0]);
-    }
-    catch(const char* err)
-    {
-        std::cerr<<err;
-    }
+    _PrioQueue.removeOne(_PrioQueue[0]);
+
     return T(rem._prioData);
 }
-
 
 #endif /* PRIORITY_QUEUE_HPP_ */

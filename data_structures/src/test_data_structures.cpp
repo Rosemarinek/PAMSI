@@ -130,9 +130,16 @@ TEST_CASE("Stack")
     stack.push(2);
     stack.push(3);
 
-    REQUIRE(stack.pop() == 3);
-    REQUIRE(stack.pop() == 2);
-    REQUIRE(stack.pop() == 1);
+    try
+    {
+        REQUIRE(stack.pop() == 3);
+        REQUIRE(stack.pop() == 2);
+        REQUIRE(stack.pop() == 1);
+    }
+    catch(const char* err)
+    {
+        std::cerr<<err;
+    }
 }
 
 TEST_CASE("Queue")
@@ -143,9 +150,16 @@ TEST_CASE("Queue")
     queue.enqueue(2);
     queue.enqueue(3);
 
-    REQUIRE(queue.dequeue() == 1);
-    REQUIRE(queue.dequeue() == 2);
-    REQUIRE(queue.dequeue() == 3);
+    try
+    {
+        REQUIRE(queue.dequeue() == 1);
+        REQUIRE(queue.dequeue() == 2);
+        REQUIRE(queue.dequeue() == 3);
+    }
+    catch(const char* err)
+    {
+        std::cerr<<err;
+    }
 }
 
 TEST_CASE("PriorityQueue")
@@ -156,7 +170,15 @@ TEST_CASE("PriorityQueue")
     queue.enqueue(3, 5);
     queue.enqueue(2, 30);
 
-    REQUIRE(queue.dequeue() == 2);
-    REQUIRE(queue.dequeue() == 1);
-    REQUIRE(queue.dequeue() == 3);
+    try
+    {
+        REQUIRE(queue.dequeue() == 2);
+        REQUIRE(queue.dequeue() == 1);
+        REQUIRE(queue.dequeue() == 3);
+    }
+    catch(const char* err)
+    {
+        std::cerr<<err;
+    }
+
 }

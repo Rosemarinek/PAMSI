@@ -21,14 +21,8 @@ template <typename T>
 T Stack<T>::pop()
 {
     T rem = _Stack[0];
-    try
-    {
-        _Stack.removeOne(_Stack[0]);
-    }
-    catch(const char* err)
-    {
-        std::cerr<<err;
-    }
+    _Stack.removeOne(_Stack[0]);
+
     return T(rem);
 }
 
