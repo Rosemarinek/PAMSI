@@ -1,6 +1,5 @@
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
-
 #include "sorting/sorting.hpp"
 
 #include <filesystem>
@@ -69,7 +68,7 @@ TEST_CASE("Sorting big data -- quicksort")
 
     std::sort(refTab.begin(), refTab.end());
 
-    quickSort(tab,0,size(tab)-1);
+    quickSort(tab);
 
     for(int i = 0; i < tab.size(); ++i)
     {
@@ -94,7 +93,7 @@ TEST_CASE("Sorting big data -- merge sort")
 
     std::sort(refTab.begin(), refTab.end());
 
-    mergeSort(tab,0,size(tab)-1);
+    mergeSort(tab);
 
     for(int i = 0; i < tab.size(); ++i)
     {
@@ -106,7 +105,7 @@ TEST_CASE("Sorting big data -- merge sort")
 TEST_CASE("Sorting big data -- pessQuicksort")
 {
     auto dataFilePath = GENERATE(dataDirectoryPath / "sort_data_10000.bin", dataDirectoryPath / "sort_data_100000.bin",
-                                 dataDirectoryPath / "sort_data_1000000.bin");
+                                dataDirectoryPath / "sort_data_1000000.bin");
     std::vector<int> tab, refTab;
 
     readData(dataFilePath, tab);
@@ -118,8 +117,10 @@ TEST_CASE("Sorting big data -- pessQuicksort")
     REQUIRE(refTab.size() > 1);
 
     std::sort(refTab.begin(), refTab.end());
+    std::sort(tab.begin(), tab.end());
+    std::reverse(tab.begin(), tab.end());
 
-    pessQuickSort(tab,0,size(tab)-1);
+    pessQuickSort(tab);
 
     for(int i = 0; i < tab.size(); ++i)
     {

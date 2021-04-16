@@ -9,7 +9,7 @@ void bubbleSort(std::vector<int>& tab)
                 std::swap(tab[i], tab[i + 1]);
 }
 
-void quickSort(std::vector<int>& tab, int left, int right)
+void quickSorting(std::vector<int>& tab, int left, int right)
 {
     int pivot = tab[(left + right) / 2];
 
@@ -38,16 +38,23 @@ void quickSort(std::vector<int>& tab, int left, int right)
 
     if(left < j)
     {
-        quickSort(tab, left, j);
+        quickSorting(tab, left, j);
     }
 
     if(i < right)
     {
-        quickSort(tab, i, right);
+        quickSorting(tab, i, right);
     }
 }
 
-void pessQuickSort(std::vector<int>& tab, int left, int right)
+
+void quickSort(std::vector<int>& tab)
+{
+    quickSorting(tab,0,size(tab)-1);
+}
+
+
+void pessQuickSorting(std::vector<int>& tab, int left, int right)
 {
     int pivot = tab[left];
 
@@ -76,16 +83,20 @@ void pessQuickSort(std::vector<int>& tab, int left, int right)
 
     if(left < j)
     {
-        pessQuickSort(tab, left, j);
+        pessQuickSorting(tab, left, j);
     }
 
     if(i < right)
     {
-        pessQuickSort(tab, i, right);
+        pessQuickSorting(tab, i, right);
     }
 }
 
 
+void pessQuickSort(std::vector<int>& tab)
+{
+    pessQuickSorting(tab,0,size(tab)-1);
+}
 
 void merge(std::vector<int>& tab, int left, int middle, int right)
 {
@@ -139,14 +150,19 @@ void merge(std::vector<int>& tab, int left, int middle, int right)
     }
 }
 
-void mergeSort(std::vector<int>& tab, int left, int right)
+void mergeSorting(std::vector<int>& tab, int left, int right)
 {
 
     if(left < right)
     {
         int middle = left + (right - left) / 2;
-        mergeSort(tab, left, middle);
-        mergeSort(tab, (middle + 1), right);
+        mergeSorting(tab, left, middle);
+        mergeSorting(tab, (middle + 1), right);
         merge(tab, left, middle, right);
     }
+}
+
+void mergeSort(std::vector<int>& tab)
+{
+    mergeSorting(tab,0,size(tab)-1);
 }

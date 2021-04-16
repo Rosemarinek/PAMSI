@@ -3,14 +3,8 @@
 
 #include <algorithm>
 #include <ctime>
-#include <fstream>
-#include <iostream>
 
 #define FIVE 5000
-#define TEN_THOUSAND 10000
-#define FIFTY 50000
-#define TWO_HUNDRED 200000
-#define MILLION 1000000
 
 using namespace std::chrono_literals;
 
@@ -18,11 +12,27 @@ int main(int argc, char* argv[])
 {
     srand(time(NULL));
 
-    int size = FIVE;
     std::ofstream result;
     result.open("../results/quick_result.csv");
+    chooseAlgorithm(quickSort, result, false);
 
-    for(int k = 0; k < 20; k++)
+    result.open("../results/merge_result.csv");
+    chooseAlgorithm(mergeSort, result, false);
+
+    result.open("../results/pess_quick_result.csv");
+    chooseAlgorithm(pessQuickSort, result, true);
+
+    result.open("../results/bubble_result.csv");
+    chooseAlgorithm(bubbleSort, result, false);
+
+    return 0;
+}
+
+void chooseAlgorithm(sortingFunction algorithm, std::ofstream& plik, bool reverse)
+{
+    int size = FIVE;
+
+    for(int k = 0; k < 25; k++)
     {
         for(int i = 0; i < 20; i++)
         {
@@ -33,16 +43,21 @@ int main(int argc, char* argv[])
                 j = rand() % 3000000;
             }
 
+            if(reverse == true)
+            {
+                std::sort(data_vector.begin(), data_vector.end());
+                std::reverse(data_vector.begin(), data_vector.end());
+            }
+
             Timer timer;
 
             timer.start();
-            quickSort(data_vector, 0, size - 1);
+            algorithm(data_vector);
             timer.stop();
-            std::cout << "Quick sort (nlogn) for " << size << " elements in " << timer.sInterval() << "s\n";
 
-            if(result.good())
+            if(plik.good())
             {
-                result << timer.sInterval() << " " << size << "\n";
+                plik << timer.sInterval() << " " << size << "\n";
             }
             else
                 std::cout << "File error \n";
@@ -51,11 +66,5 @@ int main(int argc, char* argv[])
         }
         size = FIVE;
     }
-    result.close();
-
-
-    //    std::sort(pq_ten.begin(), pq_ten.end());
-    //    std::reverse(pq_ten.begin(), pq_ten.end());
-
-    return 0;
+    plik.close();
 }
