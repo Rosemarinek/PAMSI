@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <ctime>
 
-#define FIVE 5000
+#define STEP 5000
 
 using namespace std::chrono_literals;
 
@@ -30,11 +30,11 @@ int main(int argc, char* argv[])
 
 void chooseAlgorithm(sortingFunction algorithm, std::ofstream& plik, bool reverse)
 {
-    int size = FIVE;
+    int size = STEP;
 
     for(int k = 0; k < 25; k++)
     {
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < 15; i++)
         {
             std::vector<int> data_vector(size);
 
@@ -43,7 +43,7 @@ void chooseAlgorithm(sortingFunction algorithm, std::ofstream& plik, bool revers
                 j = rand() % 3000000;
             }
 
-            if(reverse == true)
+            if(reverse)
             {
                 std::sort(data_vector.begin(), data_vector.end());
                 std::reverse(data_vector.begin(), data_vector.end());
@@ -62,9 +62,9 @@ void chooseAlgorithm(sortingFunction algorithm, std::ofstream& plik, bool revers
             else
                 std::cout << "File error \n";
 
-            size = size + FIVE;
+            size = size + STEP;
         }
-        size = FIVE;
+        size = STEP;
     }
     plik.close();
 }
