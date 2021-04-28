@@ -14,6 +14,7 @@ class AdjacencyMatrixGraph : public Graph
 
   public:
     static std::unique_ptr<Graph> createGraph(std::istream& is);
+    AdjacencyMatrixGraph();
     AdjacencyMatrixGraph(const int& size);
     AdjacencyMatrixGraph(const AdjacencyMatrixGraph& otherMatrix);
     void print() override;
