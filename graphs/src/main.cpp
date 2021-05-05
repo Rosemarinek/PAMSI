@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     std::cout<<"\n";
 
     std::cout << "Adjacency matrix:" << std::endl;
+
     inputFile.open("../data/graph/graphV10D0.25.txt");
     auto graphM = AdjacencyMatrixGraph::createGraph(inputFile);
     graphM->print();

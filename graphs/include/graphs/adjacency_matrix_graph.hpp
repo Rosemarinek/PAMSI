@@ -9,12 +9,12 @@
 
 class AdjacencyMatrixGraph : public Graph
 {
+    int** _Matrix;
+    int _Vertex;
 
-    std::vector<std::vector<int>> _Matrix;
 
   public:
     static std::unique_ptr<Graph> createGraph(std::istream& is);
-    AdjacencyMatrixGraph();
     AdjacencyMatrixGraph(const int& size);
     AdjacencyMatrixGraph(const AdjacencyMatrixGraph& otherMatrix);
     void print() override;

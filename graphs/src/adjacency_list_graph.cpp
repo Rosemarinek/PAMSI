@@ -3,33 +3,25 @@
 
 std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
 {
-    if(is)
+    std::string line;
+    std::getline(is, line);
+    std::istringstream iss{line};
+
+    int size, connection, firstIndex;
+    graphConnection box;
+    iss >> size >> connection;
+
+    AdjacencyListGraph list(size);
+
+    for(int i = 0; i < connection; i++)
     {
-        std::string line;
         std::getline(is, line);
         std::istringstream iss{line};
-
-        int size, connection, firstIndex;
-        graphConnection box;
-        iss >> size >> connection;
-
-        AdjacencyListGraph list(size);
-
-        for(int i = 0; i < connection; i++)
-        {
-            std::getline(is, line);
-            std::istringstream iss{line};
-            iss >> firstIndex >> box.endVertexIndex >> box.cost;
-            list._List[firstIndex].push_back(box);
-        }
-
-        return std::make_unique<AdjacencyListGraph>(list);
+        iss >> firstIndex >> box.endVertexIndex >> box.cost;
+        list._List[firstIndex].push_back(box);
     }
-    else
-    {
-        AdjacencyListGraph list0(0);
-        return std::make_unique<AdjacencyListGraph>(list0);
-    }
+
+    return std::make_unique<AdjacencyListGraph>(list);
 }
 
 AdjacencyListGraph::AdjacencyListGraph(const int& size)
