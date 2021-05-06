@@ -8,7 +8,7 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
     std::istringstream iss{line};
 
     int size, connection, firstIndex;
-    graphConnection box;
+    graphConnection box{};
     iss >> size >> connection;
 
     AdjacencyListGraph list(size);
@@ -26,8 +26,7 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
 
 AdjacencyListGraph::AdjacencyListGraph(const int& size)
 {
-    std::vector<std::vector<graphConnection>> listGraph(size);
-    _List = listGraph;
+    _List.resize(size);
 }
 
 AdjacencyListGraph::AdjacencyListGraph(const AdjacencyListGraph& otherList)
@@ -46,4 +45,21 @@ void AdjacencyListGraph::print()
         }
         std::cout << "\n";
     }
+}
+
+int AdjacencyListGraph::size()
+{
+    return _List.size();
+}
+
+int AdjacencyListGraph::operator()(const unsigned int& index, const unsigned int& index2)
+{
+    for(const auto& i : _List[index])
+    {
+        if(i.endVertexIndex == index2)
+        {
+            return i.cost;
+        }
+    }
+    return INT_MAX;
 }

@@ -12,12 +12,14 @@ class AdjacencyMatrixGraph : public Graph
     int** _Matrix;
     int _Vertex;
 
-
   public:
     static std::unique_ptr<Graph> createGraph(std::istream& is);
-    AdjacencyMatrixGraph(const int& size);
+    explicit AdjacencyMatrixGraph(const int& size);
     AdjacencyMatrixGraph(const AdjacencyMatrixGraph& otherMatrix);
     void print() override;
+    int size() override;
+    int operator()(const unsigned int& index, const unsigned int& index2) override;
+    ~AdjacencyMatrixGraph() override;
 };
 
 #endif /* ADJACENCY_MATRIX_GRAPH_HPP_ */

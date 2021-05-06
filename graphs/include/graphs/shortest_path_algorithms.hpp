@@ -6,6 +6,8 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <limits.h>
+
 
 struct VertexResult
 {

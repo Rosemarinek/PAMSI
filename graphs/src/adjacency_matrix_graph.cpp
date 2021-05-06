@@ -70,3 +70,23 @@ void AdjacencyMatrixGraph::print()
         std::cout << "\n";
     }
 }
+
+int AdjacencyMatrixGraph::size()
+{
+    return _Vertex;
+}
+
+int AdjacencyMatrixGraph::operator()(const unsigned int& index, const unsigned int& index2)
+{
+
+    return _Matrix[index][index2];
+}
+
+AdjacencyMatrixGraph::~AdjacencyMatrixGraph()
+{
+    for(int i = 0; i < _Vertex; ++i)
+    {
+        delete[] _Matrix[i];
+    }
+    delete[] _Matrix;
+}

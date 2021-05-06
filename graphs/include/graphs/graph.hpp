@@ -6,7 +6,11 @@
 class Graph
 {
   public:
-    virtual void print()=0;
+    virtual void print() = 0;
+    virtual int size() = 0;
+    virtual int operator()(const unsigned int& index, const unsigned int& index2) = 0;
+
+    virtual ~Graph() = default;
 };
 
 #endif /* GRAPH_HPP_ */
