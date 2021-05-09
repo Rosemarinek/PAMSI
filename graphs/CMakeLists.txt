@@ -14,5 +14,5 @@ target_link_libraries(test_graphs graph_algorithms_lib)
 target_compile_definitions(test_graphs PUBLIC DATA_DIR_PATH="${CMAKE_CURRENT_SOURCE_DIR}/data/")
 
 add_executable(efficiency_tests
-        src/main.cpp)
+        src/main.cpp src/timer.cpp)
 target_link_libraries(efficiency_tests graph_algorithms_lib)
