@@ -6,14 +6,14 @@
 #include <map>
 #include <utility>
 #include <vector>
-#include <limits.h>
+#include <climits>
 
 
 struct VertexResult
 {
     int cost;
     std::vector<int> path;
-};
+ };
 
 using ShortestPathResult = std::map<int, VertexResult>;
 

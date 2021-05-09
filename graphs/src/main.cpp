@@ -22,7 +22,5 @@ int main(int argc, char* argv[])
     graphM->print();
     inputFile.close();
 
-    std::cout << "size L: " << graphL->size() << "\n";
-    std::cout << "size M: " << graphM->size() << "\n";
     return 0;
 }

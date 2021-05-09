@@ -20,6 +20,9 @@ std::unique_ptr<Graph> AdjacencyMatrixGraph::createGraph(std::istream& is)
         std::getline(is, line);
         std::istringstream iss{line};
         iss >> row >> column >> cost;
+        std::vector<int> edge{row, column, cost};
+        matrix._Edge.push_back(edge);
+
         matrix._Matrix[row][column] = cost;
     }
 
@@ -56,6 +59,7 @@ AdjacencyMatrixGraph::AdjacencyMatrixGraph(const AdjacencyMatrixGraph& otherMatr
             _Matrix[row][column] = otherMatrix._Matrix[row][column];
         }
     }
+    _Edge = otherMatrix._Edge;
 }
 
 void AdjacencyMatrixGraph::print()
@@ -89,4 +93,9 @@ AdjacencyMatrixGraph::~AdjacencyMatrixGraph()
         delete[] _Matrix[i];
     }
     delete[] _Matrix;
+}
+
+std::vector<std::vector<int>> AdjacencyMatrixGraph::Edge()
+{
+    return std::vector<std::vector<int>>(_Edge);
 }

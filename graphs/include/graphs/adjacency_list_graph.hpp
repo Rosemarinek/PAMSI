@@ -2,9 +2,9 @@
 #define ADJACENCY_LIST_GRAPH_HPP_
 
 #include "graphs/graph.hpp"
+#include <climits>
 #include <memory>
 #include <vector>
-#include <limits.h>
 
 class AdjacencyListGraph : public Graph
 {
@@ -15,6 +15,7 @@ class AdjacencyListGraph : public Graph
     };
 
     std::vector<std::vector<graphConnection>> _List;
+    std::vector<std::vector<int>> _Edge;
 
   public:
     explicit AdjacencyListGraph(const int& size);
@@ -23,6 +24,7 @@ class AdjacencyListGraph : public Graph
     void print() override;
     int size() override;
     int operator()(const unsigned int& index, const unsigned int& index2) override;
+    std::vector<std::vector<int>> Edge() override;
     ~AdjacencyListGraph() override = default;
 };
 

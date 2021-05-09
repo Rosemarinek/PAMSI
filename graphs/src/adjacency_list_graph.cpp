@@ -18,6 +18,10 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
         std::getline(is, line);
         std::istringstream iss{line};
         iss >> firstIndex >> box.endVertexIndex >> box.cost;
+
+        std::vector<int> edge{firstIndex, box.endVertexIndex, box.cost};
+        list._Edge.push_back(edge);
+
         list._List[firstIndex].push_back(box);
     }
 
@@ -32,6 +36,7 @@ AdjacencyListGraph::AdjacencyListGraph(const int& size)
 AdjacencyListGraph::AdjacencyListGraph(const AdjacencyListGraph& otherList)
 {
     _List = otherList._List;
+    _Edge = otherList._Edge;
 }
 
 void AdjacencyListGraph::print()
@@ -62,4 +67,9 @@ int AdjacencyListGraph::operator()(const unsigned int& index, const unsigned int
         }
     }
     return INT_MAX;
+}
+
+std::vector<std::vector<int>> AdjacencyListGraph::Edge()
+{
+    return std::vector<std::vector<int>>(_Edge);
 }
