@@ -7,9 +7,8 @@ Game::Game()
     this->initWindow();
     this->initShape();
     this->initLogo();
-    this->initX();
-    this->initO();
-    this->initBoard(-80,-600);
+   // this->initX(70,220);
+   // this->initO(240,220);
 }
 
 Game::~Game()
@@ -55,11 +54,10 @@ void Game::update()
 
 void Game::render()
 {
-    this->window->clear(sf::Color(98,175,255));
-   // this->window->draw(this->shape);
+    this->window->clear(sf::Color(98, 175, 255));
     this->window->draw(this->logo);
     this->window->draw(this->board);
-   // this->drawBoard(3);
+    this->drawBoard(3);
     this->window->draw(this->x);
     this->window->draw(this->o);
     this->window->display();
@@ -69,7 +67,6 @@ const bool Game::running() const
 {
     return this->window->isOpen();
 }
-
 
 void Game::initShape()
 {
@@ -84,61 +81,72 @@ void Game::updateMousePos()
     // update mouse position relative to screen
     //    std::cout<<"Mouse pos: x:"<<sf::Mouse::getPosition().x<<" y:"<<sf::Mouse::getPosition().y<<"\n";
     // update mouse position relative to window
-//        std::cout << "Mouse pos: x:" << sf::Mouse::getPosition(*this->window).x
-//                  << " y:" << sf::Mouse::getPosition(*this->window).y << "\n";
+    //        std::cout << "Mouse pos: x:" << sf::Mouse::getPosition(*this->window).x
+    //                  << " y:" << sf::Mouse::getPosition(*this->window).y << "\n";
     this->mousePosWindow = sf::Mouse::getPosition(*this->window);
 }
 
 void Game::initLogo()
 {
-    float scale = _width/1700; //1700 is the width of the original logo
+    float scale = _width / 1700; // 1700 is the width of the original logo
     this->imLogo.loadFromFile("../resources/textures/logo.png");
     this->texLogo.loadFromImage(imLogo);
     this->texLogo.setSmooth(true);
     this->logo.setTexture(texLogo);
-    this->logo.setScale(sf::Vector2f(scale,scale));
-    this->logo.setOrigin(sf::Vector2f(10.f,25.f));
+    this->logo.setScale(sf::Vector2f(scale, scale));
+    this->logo.setOrigin(sf::Vector2f(10.f, 25.f));
 }
 
-void Game::initX()
+void Game::initX(float x, float y)
 {
     this->imX.loadFromFile("../resources/textures/x.png");
     this->texX.loadFromImage(imX);
     this->texX.setSmooth(true);
     this->x.setTexture(texX);
-    this->x.setScale(sf::Vector2f(0.4f,0.4f));
-    this->x.setOrigin(sf::Vector2f(-500.f,-600.f));
+    this->x.setScale(sf::Vector2f(0.4f, 0.4f));
+    this->x.setPosition(x,y);
 }
 
-void Game::initO()
+void Game::initO(float x, float y)
 {
     this->imO.loadFromFile("../resources/textures/o.png");
     this->texO.loadFromImage(imO);
     this->texO.setSmooth(true);
     this->o.setTexture(texO);
-    this->o.setScale(sf::Vector2f(0.4f,0.4f));
-    this->o.setOrigin(sf::Vector2f(-40.f,-580.f));
+    this->o.setScale(sf::Vector2f(0.4f, 0.4f));
+    this->o.setPosition(x,y);
 }
 
-void Game::initBoard(float x, float y)
+void Game::initBoard(float x, float y, float size)
 {
-
+    float scale = 1.f-(size-3)*0.2f;
     this->imBoard.loadFromFile("../resources/textures/board.png");
     this->texBoard.loadFromImage(imBoard);
     this->texBoard.setSmooth(true);
     this->board.setTexture(texBoard);
-    this->board.setScale(sf::Vector2f(0.8f,0.8f));
-    this->board.setOrigin(sf::Vector2f(x,y));
+    this->board.setScale(sf::Vector2f(scale, scale));
+//    this->board.setOrigin(sf::Vector2f(x, y)); // set position
+    this->board.setPosition(x, y); // set position
 }
 
-void Game::drawBoard(int size) {
+void Game::drawBoard(int size)
+{
     this->_boards.resize(size);
-
-    float s = _width/float(size);
-
-    for (int i=0; i<size; i++)
+    float x1 = 50;
+    float y1 = 200;
+    float w = (_width-100) / size;
+    float h = (_height-300)/size;
+    for(auto i = 0; i < size; ++i)
     {
-       // this->_boards[i]=initBoard(s,s);
-       // this->window->draw(this->_boards[i]);
+        for(auto j = 0; j < size; j++)
+        {
+            this->initBoard((x1 +i * w), (y1 + j * h),size);
+            this->_boards.push_back(this->board);
+        }
+    }
+
+    for(auto& i : this->_boards)
+    {
+        this->window->draw(i);
     }
 }

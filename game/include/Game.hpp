@@ -62,10 +62,11 @@ class Game
     void updateMousePos();
 
 
+
     void initLogo();
-    void initX();
-    void initO();
-    void initBoard(float x, float y);
+    void initX(float x, float y);
+    void initO(float x, float y);
+    void initBoard(float x, float y, float size);
     void drawBoard(int size);
 
 };
