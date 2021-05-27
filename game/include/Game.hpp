@@ -7,68 +7,25 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
+#include "../include/GameDesign.hpp"
 class Game
 {
   private:
-    sf::RenderWindow* window;
-    sf::VideoMode videoMode;
-    sf::Event event;
-
-    sf::RectangleShape shape;
-
-    // Mouse position relative to window
-    sf::Vector2i mousePosWindow;
-
-    float _height = 800;
-    float _width = 600;
-
-    // logo objects
-    sf::Image imLogo;
-    sf::Texture texLogo;
-    sf::Sprite logo;
-
-    // x
-    sf::Image imX;
-    sf::Texture texX;
-    sf::Sprite x;
-
-    // o
-    sf::Image imO;
-    sf::Texture texO;
-    sf::Sprite o;
-
-    //board
-    sf::Image imBoard;
-    sf::Texture texBoard;
-    sf::Sprite board;
-    std::vector<sf::Sprite> _boards;
-
-
-
-    void initVariable();
-    void initWindow();
-    void initShape();
-
+    GameDesign game;
+    sf::Event _event;
 
   public:
-    Game();
-    //    virtual ~Game();
-    ~Game();
-
-    const bool running() const;
-    void update();
-    void render();
+    /*!
+     * Function through a loop pops the event on top of the event queue
+     */
     void pollEvents();
-    void updateMousePos();
 
-
-
-    void initLogo();
-    void initX(float x, float y);
-    void initO(float x, float y);
-    void initBoard(float x, float y, float size);
-    void drawBoard(int size);
-
+    /*!
+     * Function update event
+     */
+    void update();
+    const bool running() const;
+    void render();
 };
 
 #endif // GAME_GAME_HPP
