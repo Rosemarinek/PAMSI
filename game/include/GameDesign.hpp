@@ -15,9 +15,12 @@ class GameDesign
     friend class Game;
 
   private:
+    sf::VideoMode _videoMode;
+    sf::RenderWindow* _window;
+
     /*window dimensions*/
-    const float _height = 800;
-    const float _width = 600;
+    float _height;
+    float _width;
 
     /*the coordinates of the drawing location*/
     const float _firstX = 50;
@@ -26,8 +29,22 @@ class GameDesign
     /*board size*/
     int _size = 3;
 
-    sf::VideoMode _videoMode;
-    sf::RenderWindow* _window;
+    //    sf::String playerInput;
+//    sf::Text playerText;
+
+    /*vectors storing board coordinates*/
+    std::vector<float> _xCor;
+    std::vector<float> _yCor;
+
+
+    /*Menu objects*/
+    sf::Image _imMenu;
+    sf::Texture _texMenu;
+    sf::Sprite _menu;
+
+    /*Font object*/
+    sf::Font _font;
+    std::vector<sf::Text> _text;
 
     /* Game logo objects */
     sf::Image _imLogo;
@@ -53,9 +70,9 @@ class GameDesign
     /*!
      * Function is responsible for initialization of individual variables
      */
-    void initVariable();
+    void initVariable(float width,float height);
     /*!
-     *
+     * Function is responsible for window initialization
      */
     void initWindow();
 
@@ -98,6 +115,26 @@ class GameDesign
      * Function draws the board
      */
     void drawBoard();
+    /*!
+     * Function initializes start menu
+     */
+    void initMenu();
+    /*!
+     * Functions draws start menu
+     */
+    void drawMenu();
+    /*!
+     * Function draws X on the selected location
+     * @param x - x coordinate
+     * @param y - y coordinate
+     */
+    void drawX(float x, float y);
+    /*!
+      * Function draws O on the selected location
+      * @param x - x coordinate
+      * @param y - y coordinate
+      */
+    void drawO(float x, float y);
 };
 
 #endif // GAME_GAMEDESIGN_HPP

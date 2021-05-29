@@ -1,37 +1,40 @@
 #include "../include/GameDesign.hpp"
 #include <iostream>
 
-void GameDesign::initVariable()
+void GameDesign::initVariable(float width, float height)
 {
-    this->_window = nullptr;
+    _window = nullptr;
+    _width = width;
+    _height = height;
 }
 
 void GameDesign::initWindow()
 {
-    this->_videoMode.height = _height;
-    this->_videoMode.width = _width;
-    this->_window = new sf::RenderWindow(this->_videoMode, "Tic Tac Toe");
-    this->_window->setFramerateLimit(60);
+    _videoMode = sf::VideoMode(_width, _height);
+    _window = new sf::RenderWindow(_videoMode, "Tic Tac Toe", sf::Style::Close | sf::Style::Titlebar);
+    _window->setFramerateLimit(60);
+    _window->setVerticalSyncEnabled(false);
 }
 
 GameDesign::GameDesign()
 {
-    this->initVariable();
-    this->initWindow();
-    this->initLogo();
+    initVariable(600, 800);
+    initWindow();
+    initLogo();
+    initMenu();
 }
 
 GameDesign::~GameDesign()
 {
-    delete this->_window;
+    delete _window;
 }
 
 void GameDesign::renderGame()
 {
-    this->_window->clear(sf::Color(98, 175, 255));
-    this->_window->draw(this->_logo);
-    this->drawBoard();
-    this->_window->display(); //?
+    _window->clear(sf::Color(98, 175, 255));
+    //drawMenu();
+    drawBoard();
+    _window->draw(_logo);
 }
 
 void GameDesign::initLogo()
@@ -41,7 +44,7 @@ void GameDesign::initLogo()
     _texLogo.setSmooth(true);
     _logo.setTexture(_texLogo);
 
-   auto scale = static_cast<float>(_width / _imLogo.getSize().x);
+    auto scale = static_cast<float>(_width / _imLogo.getSize().x);
     _logo.setScale(sf::Vector2f(scale, scale));
     _logo.setOrigin(sf::Vector2f(10.f, 25.f));
 }
@@ -49,39 +52,42 @@ void GameDesign::initLogo()
 void GameDesign::initX(float x, float y)
 {
     float scale = 1.f - (static_cast<float>(_size - 3)) * 0.15f;
-    this->_imX.loadFromFile("../resources/textures/x.png");
-    this->_texX.loadFromImage(_imX);
-    this->_texX.setSmooth(true);
-    this->_x.setTexture(_texX);
-    this->_x.setScale(sf::Vector2f(scale, scale));
-    this->_x.setPosition(x, y);
+    _imX.loadFromFile("../resources/textures/x.png");
+    _texX.loadFromImage(_imX);
+    _texX.setSmooth(true);
+    _x.setTexture(_texX);
+    _x.setScale(sf::Vector2f(scale, scale));
+    _x.setPosition(x, y);
 }
 
 void GameDesign::initO(float x, float y)
 {
     float scale = 1.f - (static_cast<float>(_size - 3)) * 0.15f;
-    this->_imO.loadFromFile("../resources/textures/o.png");
-    this->_texO.loadFromImage(_imO);
-    this->_texO.setSmooth(true);
-    this->_o.setTexture(_texO);
-    this->_o.setScale(sf::Vector2f(scale, scale));
-    this->_o.setPosition(x, y);
+    _imO.loadFromFile("../resources/textures/o.png");
+    _texO.loadFromImage(_imO);
+    _texO.setSmooth(true);
+    _o.setTexture(_texO);
+    _o.setScale(sf::Vector2f(scale, scale));
+    _o.setPosition(x, y);
 }
 
 void GameDesign::initBoard(float x, float y)
 {
     float scale = 1.f - (static_cast<float>(_size - 3)) * 0.15f;
-    this->_imBoard.loadFromFile("../resources/textures/board.png");
-    this->_texBoard.loadFromImage(_imBoard);
-    this->_texBoard.setSmooth(true);
-    this->_board.setTexture(_texBoard);
-    this->_board.setScale(sf::Vector2f(scale, scale));
-    this->_board.setPosition(x, y);
+    _imBoard.loadFromFile("../resources/textures/board.png");
+    _texBoard.loadFromImage(_imBoard);
+    _texBoard.setSmooth(true);
+    _board.setTexture(_texBoard);
+    _board.setScale(sf::Vector2f(scale, scale));
+    _board.setPosition(x, y);
 }
 
 void GameDesign::drawBoard()
 {
-    this->_boards.resize(_size);
+    _boards.resize(_size);
+    _xCor.resize(_size);
+    _yCor.resize(_size);
+
 
     float w = (_width - 100) / (static_cast<float>(_size));
     float h = (_height - 300) / (static_cast<float>(_size));
@@ -89,13 +95,68 @@ void GameDesign::drawBoard()
     {
         for(auto j = 0; j < _size; j++)
         {
-            this->initBoard((_firstX + i * w), (_firstY + j * h));
-            this->_boards.push_back(this->_board);
+            _xCor[i]=_firstX + i * w;
+            _yCor[j]=_firstY + j * h;
+            initBoard(_xCor[i], _yCor[j]);
+            _boards.push_back(_board);
         }
     }
 
-    for(auto& i : this->_boards)
+    for(auto& i : _boards)
     {
-        this->_window->draw(i);
+        _window->draw(i);
     }
+}
+
+void GameDesign::initMenu()
+{
+    _imMenu.loadFromFile("../resources/textures/menu.png");
+    _texMenu.loadFromImage(_imMenu);
+    _texMenu.setSmooth(true);
+    _menu.setTexture(_texMenu);
+    _menu.setScale(sf::Vector2f(1.f, 1.f));
+    _menu.setPosition(0, 0);
+
+    _text.resize(3);
+    _font.loadFromFile("../resources/fonts/Gabi.ttf");
+
+    _text[0].setFont(_font);
+    _text[0].setFillColor(sf::Color::White);
+    _text[0].setString("START");
+    _text[0].setPosition(sf::Vector2f(_width / 3.5, _height / 3));
+    _text[0].setCharacterSize(100);
+
+    //    _text[1].setFont(_font);
+    //    _text[1].setFillColor(sf::Color::White);
+    //    _text[1].setString("Choose size");
+    //    _text[1].setPosition(sf::Vector2f(_width/4,_height/2));
+    //    _text[1].setCharacterSize(50);
+
+    _text[1].setFont(_font);
+    _text[1].setFillColor(sf::Color::White);
+    _text[1].setString("Press ESC to EXIT");
+    _text[1].setPosition(sf::Vector2f(_width / 4, _height / 1.5));
+    _text[1].setCharacterSize(50);
+}
+
+void ::GameDesign::drawMenu()
+{
+    _window->clear(sf::Color(98, 175, 255));
+    _window->draw(_menu);
+    for(int i = 0; i < _text.size(); ++i)
+    {
+        _window->draw(_text[i]);
+    }
+}
+
+void GameDesign::drawO(float x, float y)
+{
+    initX(x,y);
+    _window->draw(_x);
+}
+
+void GameDesign::drawX(float x, float y)
+{
+    initO(x,y);
+    _window->draw(_o);
 }

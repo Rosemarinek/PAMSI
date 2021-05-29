@@ -5,3 +5,5 @@ sort/cmake-build-debug/
 sort/.idea/
 graphs/cmake-build-debug/
 graphs/.idea/
+game/cmake-build-debug/
+game/.idea/

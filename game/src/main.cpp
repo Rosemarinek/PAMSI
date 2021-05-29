@@ -1,16 +1,12 @@
 #include "../include/Game.hpp"
 
-
-
 int main()
 {
+    // Game object
     Game game;
 
-    while(game.running())
-    {
-        game.update();
-        game.render();
-    }
+    // Game loop
+    game.run();
 
     return 0;
 }
