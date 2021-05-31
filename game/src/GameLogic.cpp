@@ -1,5 +1,2 @@
-//
-// Created by a_rozmus on 24.05.2021.
-//
+#include "GameLogic.hpp"
 
-#include "../include/GameLogic.hpp"

@@ -1,4 +1,4 @@
-#include "../include/Game.hpp"
+#include "Game.hpp"
 #include <iostream>
 
 void Game::pollEvents()
@@ -14,17 +14,28 @@ void Game::pollEvents()
             case sf::Event::KeyPressed:
                 if(_event.key.code == sf::Keyboard::Escape)
                     game._window->close();
-                if(_event.key.code == sf::Keyboard::Enter)
-                {
-
-                }
+                if(_event.key.code == sf::Keyboard::R)
+                    game.drawBoard();
                 break;
             case sf::Event::MouseMoved:
                 clickX = _event.mouseMove.x;
                 clickY = _event.mouseMove.y;
+                if(_gameStatus == 0)
+                {
+                    onPlay(game._width / 3, game._height / 2.3);
+                    game.drawMenu();
+                }
+                if(_gameStatus==1)
+                {
+                    game.drawChoice();
+                    onPlay(game._width/3, game._height/1.7);
+                }
+                if(_gameStatus==2){
+                    game.drawBoard();
+                }
                 break;
             case ::sf::Event::MouseButtonReleased:
-               moveXorO();
+                checkGameStatus();
                 break;
         }
     }
@@ -37,24 +48,22 @@ void Game::update()
 
 void Game::render()
 {
-    game.renderGame();
     game._window->display();
 }
 
-
-Game::Game(){}
+Game::Game() {}
 Game::~Game() {}
 
 void Game::run()
 {
-    if(game._window->isOpen())
-    {
-        render();
-    }
+    //    if(game._window->isOpen())
+    //    {
+    //        render();
+    //    }
 
     while(game._window->isOpen())
     {
-
+        render();
         update();
     }
 }
@@ -94,5 +103,47 @@ void Game::moveXorO()
             }
         }
         _whoseMove++;
+    }
+}
+
+void Game::onPlay(float x, float y)
+{
+    if(clickX > x &&
+       (clickX < x + 220 && clickY > y && (clickY < y + 220)))
+    {
+        game.menu._play.setColor(sf::Color(140, 140, 140));
+    }
+    else
+    {
+        game.menu._play.setColor(sf::Color(255, 255, 255));
+    }
+}
+
+void Game::pressPlay()
+{
+    if(clickX > game._width / 3 &&
+       (clickX < game._width / 3 + 220 && clickY > game._height / 2.3 && (clickY < game._height / 2.3 + 220)))
+    {
+        _gameStatus = 1;
+        game.clearWindow();
+    }
+}
+void Game::checkGameStatus()
+{
+    switch(_gameStatus)
+    {
+
+        case 0:
+            pressPlay();
+            break;
+        case 1:
+            _gameStatus=2;
+            break;
+        case 2:
+            _gameStatus = 3;
+            break;
+        case 3:
+            moveXorO();
+            break;
     }
 }

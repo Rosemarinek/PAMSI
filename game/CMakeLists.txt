@@ -5,8 +5,9 @@ project(game)
 set(CMAKE_CXX_STANDARD 17)
 # set(SOURCE_FILES main.cpp)
 
+include_directories(include)
 add_executable(game src/main.cpp include/Game.hpp src/Game.cpp src/GameDesign.cpp
-        include/GameDesign.hpp src/GameLogic.cpp include/GameLogic.hpp)
+        include/GameDesign.hpp src/GameLogic.cpp include/GameLogic.hpp src/Menu.cpp include/Menu.hpp src/MainBoard.cpp include/MainBoard.hpp src/Player.cpp include/Player.hpp)
 #add_executable(Game ${SOURCE_FILES})
 
 

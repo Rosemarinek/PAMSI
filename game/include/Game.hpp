@@ -7,7 +7,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include "../include/GameDesign.hpp"
+#include "GameDesign.hpp"
 
 /*
  * Class Game is responsible for game events
@@ -17,12 +17,13 @@ class Game
   private:
     GameDesign game;
     sf::Event _event;
+    int _gameStatus=0;
 
     /*variables holding the mouse position*/
     int clickX = 0;
     int clickY = 0;
 
-    /*a variable that determines whose movement it is*/
+    /*variable specifying whose movement is*/
     int _whoseMove=0;
 
   public:
@@ -46,6 +47,10 @@ class Game
      * Function draws X or O depending on the movement
      */
     void moveXorO();
+
+    void onPlay(float x, float y);
+    void pressPlay();
+    void checkGameStatus();
 
     /*Constructor and destructor*/
     Game();
