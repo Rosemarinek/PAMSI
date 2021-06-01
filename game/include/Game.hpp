@@ -19,6 +19,8 @@ class Game
     sf::Event _event;
     int _gameStatus=0;
 
+    int winChar=0;
+
     /*variables holding the mouse position*/
     int clickX = 0;
     int clickY = 0;
@@ -49,8 +51,13 @@ class Game
     void moveXorO();
 
     void onPlay(float x, float y);
-    void pressPlay();
+    void pressPlay(float x, float y);
     void checkGameStatus();
+    void checkClickStatus();
+    void onSize();
+    void onNumber();
+    void pressSize();
+    void pressNumber();
 
     /*Constructor and destructor*/
     Game();

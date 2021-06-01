@@ -22,21 +22,19 @@ void Menu::initChoice(float width, float height) {
     _textNumber.resize(6);
     _font.loadFromFile("../resources/fonts/Winkle.ttf");
 
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < _textSize.size(); i++)
     {
         _textSize[i].setFont(_font);
         _textSize[i].setFillColor(sf::Color::Black);
         _textSize[i].setString(std::to_string(i+3));
-        _textSize[i].setPosition(sf::Vector2f((width /7.5+i*80), height / 5.1));
+        _textSize[i].setPosition(sf::Vector2f((width /7.8+i*80), height / 5.1));
         _textSize[i].setCharacterSize(90);
 
         _textNumber[i].setFont(_font);
         _textNumber[i].setFillColor(sf::Color::Black);
         _textNumber[i].setString(std::to_string(i+3));
-        _textNumber[i].setPosition(sf::Vector2f((width /7.5+i*80), height / 2.25));
+        _textNumber[i].setPosition(sf::Vector2f((width /7.8+i*80), height / 2.25));
         _textNumber[i].setCharacterSize(90);
-
-
 
     }
 

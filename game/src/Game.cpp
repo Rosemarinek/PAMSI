@@ -14,7 +14,7 @@ void Game::pollEvents()
             case sf::Event::KeyPressed:
                 if(_event.key.code == sf::Keyboard::Escape)
                     game._window->close();
-                if(_event.key.code == sf::Keyboard::R)
+                if(_event.key.code == sf::Keyboard::R &&_gameStatus==4)
                     game.drawBoard();
                 break;
             case sf::Event::MouseMoved:
@@ -23,19 +23,24 @@ void Game::pollEvents()
                 if(_gameStatus == 0)
                 {
                     onPlay(game._width / 3, game._height / 2.3);
-                    game.drawMenu();
                 }
-                if(_gameStatus==1)
+                if(_gameStatus == 1)
                 {
-                    game.drawChoice();
-                    onPlay(game._width/3, game._height/1.7);
+                    onSize();
+                    onNumber();
+                    onPlay(game._width / 3, game._height / 1.7);
                 }
-                if(_gameStatus==2){
-                    game.drawBoard();
+                if(_gameStatus == 2)
+                {
+
+                }
+                if(_gameStatus ==3)
+                {
+                    _gameStatus = 4;
                 }
                 break;
             case ::sf::Event::MouseButtonReleased:
-                checkGameStatus();
+                checkClickStatus();
                 break;
         }
     }
@@ -44,6 +49,7 @@ void Game::pollEvents()
 void Game::update()
 {
     pollEvents();
+    checkGameStatus();
 }
 
 void Game::render()
@@ -56,10 +62,11 @@ Game::~Game() {}
 
 void Game::run()
 {
-    //    if(game._window->isOpen())
-    //    {
-    //        render();
-    //    }
+//        if(game._window->isOpen())
+//        {
+//           // render();
+//
+//        }
 
     while(game._window->isOpen())
     {
@@ -108,8 +115,7 @@ void Game::moveXorO()
 
 void Game::onPlay(float x, float y)
 {
-    if(clickX > x &&
-       (clickX < x + 220 && clickY > y && (clickY < y + 220)))
+    if(clickX > x && (clickX < x + 220) && clickY > y && (clickY < y + 220))
     {
         game.menu._play.setColor(sf::Color(140, 140, 140));
     }
@@ -119,31 +125,96 @@ void Game::onPlay(float x, float y)
     }
 }
 
-void Game::pressPlay()
+void Game::pressPlay(float x, float y)
 {
-    if(clickX > game._width / 3 &&
-       (clickX < game._width / 3 + 220 && clickY > game._height / 2.3 && (clickY < game._height / 2.3 + 220)))
+    if(clickX > x && (clickX < x + 220 && clickY > y && (clickY < y + 220)))
     {
-        _gameStatus = 1;
+        _gameStatus =_gameStatus+1;
         game.clearWindow();
     }
 }
-void Game::checkGameStatus()
+
+void Game::checkClickStatus()
 {
     switch(_gameStatus)
     {
 
         case 0:
-            pressPlay();
+            pressPlay(game._width / 3, game._height / 2.3);
             break;
         case 1:
-            _gameStatus=2;
+            pressSize();
             break;
         case 2:
-            _gameStatus = 3;
+            pressPlay(game._width / 3, game._height / 1.7);
             break;
-        case 3:
+        case 4:
             moveXorO();
             break;
     }
 }
+
+void Game::onSize()
+{
+    for(int i = 0; i < game.menu._textSize.size(); ++i)
+    {
+        if(clickX > (game._width / 7.8 + i * 80) && clickX < game._width / 7.8 + (i + 1) * 80 &&
+           clickY > game._height / 5.1  && clickY < game._height /5.1 + 80)
+        {
+            game.menu._textSize[i].setFillColor(sf::Color::Red);
+        }
+        else
+        {
+            game.menu._textSize[i].setFillColor(sf::Color::Black);
+        }
+    }
+    game.menu._play.setColor(sf::Color(255, 255, 255));
+}
+
+void Game::onNumber()
+{
+    for(int i = 0; i < game.menu._textNumber.size(); ++i)
+    {
+        if(clickX > (game._width / 7.8 + i * 80) && clickX < game._width / 7.8 + (i + 1) * 80 &&
+           clickY > game._height / 2.25  && clickY < game._height /2.25 + 80)
+        {
+            game.menu._textNumber[i].setFillColor(sf::Color::Red);
+        }
+        else
+        {
+            game.menu._textNumber[i].setFillColor(sf::Color::Black);
+        }
+    }
+}
+
+
+void Game::checkGameStatus()
+{
+    if(_gameStatus == 0)
+    {
+        game.drawMenu();
+    }
+    if(_gameStatus == 1)
+    {
+        game.drawChoice();
+    }
+    if(_gameStatus == 3)
+    {
+        game.drawBoard();
+    }
+}
+void Game::pressSize() {
+    for(int i = 0; i < game.menu._textSize.size(); ++i)
+    {
+        if(clickX > (game._width / 7.8 + i * 80) && clickX < game._width / 7.8 + (i + 1) * 80 &&
+           clickY > game._height / 5.1  && clickY < game._height /5.1 + 80)
+        {
+            game.menu._textSize[i].setFillColor(sf::Color::Red);
+            game._size=i+3;
+            _gameStatus=_gameStatus+1;
+        }
+    }
+}
+
+
+void Game::pressNumber() {}

@@ -25,7 +25,7 @@ class GameDesign
     const float _firstY = 200;
 
     /*board size*/
-    int _size = 3;
+    int _size=0;
 
     /*vectors storing board coordinates*/
     std::vector<float> _xCor;
