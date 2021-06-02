@@ -81,6 +81,8 @@ class GameDesign
      * Function draws the selection menu
      */
     void drawChoice();
+    void drawSize();
+    void drawWinNumber();
 
     void drawPlayButton(float x, float y);
 };

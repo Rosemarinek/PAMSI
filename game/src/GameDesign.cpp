@@ -21,8 +21,8 @@ GameDesign::GameDesign()
     initVariable(600, 800);
     initWindow();
     board.initLogo(_width);
-    menu.initMenu(_width,_height);
-    menu.initChoice(_width,_height);
+    menu.initMenu(_width, _height);
+    menu.initChoice(_width, _height);
 }
 
 GameDesign::~GameDesign()
@@ -34,7 +34,6 @@ void GameDesign::clearWindow()
 {
     _window->clear(sf::Color(98, 175, 255));
 }
-
 
 void GameDesign::drawBoard()
 {
@@ -66,9 +65,9 @@ void GameDesign::drawBoard()
 
 void ::GameDesign::drawMenu()
 {
-   clearWindow();
+    clearWindow();
     _window->draw(menu._menu);
-    drawPlayButton(_width/3, _height/2.3);
+    drawPlayButton(_width / 3, _height / 2.3);
 }
 
 void GameDesign::drawO(float x, float y)
@@ -83,20 +82,33 @@ void GameDesign::drawX(float x, float y)
     _window->draw(player._o);
 }
 
-
 void GameDesign::drawChoice()
 {
     clearWindow();
     _window->draw(menu._choice);
+    drawSize();
+    if(_size>=3)
+        drawWinNumber();
+}
+
+void GameDesign::drawPlayButton(float x, float y)
+{
+    menu.initPlayButton(x, y);
+    _window->draw(menu._play);
+}
+void GameDesign::drawSize()
+{
     for(int i = 0; i < menu._textSize.size(); ++i)
     {
         _window->draw(menu._textSize[i]);
-        _window->draw(menu._textNumber[i]);
     }
-    drawPlayButton(_width/3,_height/1.7);
 }
 
-void GameDesign::drawPlayButton(float x, float y) {
-    menu.initPlayButton(x,y);
-    _window->draw(menu._play);
+void GameDesign::drawWinNumber()
+{
+    //clearWindow();
+    for(int i = 0; i < _size-2; ++i)
+    {
+        _window->draw(menu._textNumber[i]);
+    }
 }
