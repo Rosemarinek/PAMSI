@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <iostream>
 
 void Game::pollEvents()
 {
@@ -14,8 +13,16 @@ void Game::pollEvents()
             case sf::Event::KeyPressed:
                 if(_event.key.code == sf::Keyboard::Escape)
                     game._window->close();
-                if(_event.key.code == sf::Keyboard::R && _gameStatus == 5)
+                else if(_event.key.code == sf::Keyboard::R && _gameStatus == 5)
                     game.drawBoard();
+                else if(_event.key.code == sf::Keyboard::M)
+                {
+                    //                    game.clearWindow();
+                    //                    _gameStatus=0;
+                    //                    game._size=0;
+                    //                    _winNumber=0;
+                    // TODO: Back to menu
+                }
                 break;
             case sf::Event::MouseMoved:
                 clickX = _event.mouseMove.x;
@@ -35,25 +42,17 @@ void Game::update()
     checkGameStatus();
 }
 
-void Game::render()
-{
-    game._window->display();
-}
-
 Game::Game() {}
 Game::~Game() {}
 
 void Game::run()
 {
-    //        if(game._window->isOpen())
-    //        {
-    //           // render();
-    //
-    //        }
 
     while(game._window->isOpen())
     {
-        render();
+        game._window->display();
+
+        // render();
         update();
     }
 }
@@ -69,7 +68,7 @@ void Game::moveXorO()
                 if(clickX > game._xCor[i] && clickX < (game._xCor[i] + (game._xCor[1] - game._xCor[0])) &&
                    clickY > game._yCor[j] && clickY < (game._yCor[j] + (game._yCor[1] - game._yCor[0])))
                 {
-                    std::cout << game._xCor[i] << " " << game._yCor[j] << "\n";
+
                     game.drawX(game._xCor[i], game._yCor[j]);
                     game._window->display();
                 }
@@ -86,7 +85,7 @@ void Game::moveXorO()
                 if(clickX > game._xCor[i] && clickX < (game._xCor[i] + (game._xCor[1] - game._xCor[0])) &&
                    clickY > game._yCor[j] && clickY < (game._yCor[j] + (game._yCor[1] - game._yCor[0])))
                 {
-                    std::cout << game._xCor[i] << " " << game._yCor[j] << "\n";
+
                     game.drawO(game._xCor[i], game._yCor[j]);
                     game._window->display();
                 }
@@ -188,8 +187,8 @@ void Game::onSize()
 {
     for(int i = 0; i < game.menu._textSize.size(); ++i)
     {
-        if(clickX > (game._width / 7.8 + i * 80) && clickX < game._width / 7.8 + (i + 1) * 80 &&
-           clickY > game._height / 5.1 && clickY < game._height / 5.1 + 80)
+        if(clickX > game.menu._xCorSizeNumber[i] && clickX < game.menu._xCorSizeNumber[i] + 80 &&
+           clickY > game.menu._yCorSize[i] && clickY < game.menu._yCorSize[i] + 80)
         {
             game.menu._textSize[i].setFillColor(sf::Color::Red);
         }
@@ -205,8 +204,9 @@ void Game::onNumber()
 {
     for(int i = 0; i < game._size - 2; ++i)
     {
-        if(clickX > (game._width / 7.8 + i * 80) && clickX < game._width / 7.8 + (i + 1) * 80 &&
-           clickY > game._height / 2.25 && clickY < game._height / 2.25 + 80)
+
+        if(clickX > game.menu._xCorSizeNumber[i] && clickX < game.menu._xCorSizeNumber[i] + 80 &&
+           clickY > game.menu._yCorNumber[i] && clickY < game.menu._yCorNumber[i] + 80)
         {
             game.menu._textNumber[i].setFillColor(sf::Color::Red);
         }
@@ -221,8 +221,8 @@ void Game::pressSize()
 {
     for(int i = 0; i < game.menu._textSize.size(); ++i)
     {
-        if(clickX > (game._width / 7.8 + i * 80) && clickX < game._width / 7.8 + (i + 1) * 80 &&
-           clickY > game._height / 5.1 && clickY < game._height / 5.1 + 80)
+        if(clickX > game.menu._xCorSizeNumber[i] && clickX < game.menu._xCorSizeNumber[i] + 80 &&
+           clickY > game.menu._yCorSize[i] && clickY < game.menu._yCorSize[i] + 80)
         {
             game.menu._textSize[i].setFillColor(sf::Color::Red);
             game._size = i + 3;
@@ -235,8 +235,8 @@ void Game::pressNumber()
 {
     for(int i = 0; i < (game._size - 2); ++i)
     {
-        if(clickX > (game._width / 7.8 + i * 80) && clickX < game._width / 7.8 + (i + 1) * 80 &&
-           clickY > game._height / 2.25 && clickY < game._height / 2.25 + 80)
+        if(clickX > game.menu._xCorSizeNumber[i] && clickX < game.menu._xCorSizeNumber[i] + 80 &&
+           clickY > game.menu._yCorNumber[i] && clickY < game.menu._yCorNumber[i] + 80)
         {
             game.menu._textNumber[i].setFillColor(sf::Color::Red);
             _winNumber = i + 3;

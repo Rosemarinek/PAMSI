@@ -81,9 +81,19 @@ class GameDesign
      * Function draws the selection menu
      */
     void drawChoice();
+    /*!
+     * Function draws possible board sizes
+     */
     void drawSize();
+    /*!
+     * Function draws the number of wing characters
+     */
     void drawWinNumber();
-
+    /*!
+     * Function draws play button
+     * @param x - button x coordinate
+     * @param y - button y coordinate
+     */
     void drawPlayButton(float x, float y);
 };
 

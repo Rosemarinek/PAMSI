@@ -24,16 +24,25 @@ void Menu::initChoice(float width, float height) {
 
     for(int i = 0; i < _textSize.size(); i++)
     {
+        _xCorSizeNumber.resize(_textSize.size());
+        _yCorSize.resize(_textSize.size());
+        _yCorNumber.resize(_textSize.size());
+
+        _xCorSizeNumber[i]=width /7.8+i*80;
+        _yCorSize[i]=height / 5.1;
+
         _textSize[i].setFont(_font);
         _textSize[i].setFillColor(sf::Color::Black);
         _textSize[i].setString(std::to_string(i+3));
-        _textSize[i].setPosition(sf::Vector2f((width /7.8+i*80), height / 5.1));
+        _textSize[i].setPosition(sf::Vector2f(_xCorSizeNumber[i], _yCorSize[i]));
         _textSize[i].setCharacterSize(90);
+
+        _yCorNumber[i]=height / 2.25;
 
         _textNumber[i].setFont(_font);
         _textNumber[i].setFillColor(sf::Color::Black);
         _textNumber[i].setString(std::to_string(i+3));
-        _textNumber[i].setPosition(sf::Vector2f((width /7.8+i*80), height / 2.25));
+        _textNumber[i].setPosition(sf::Vector2f(_xCorSizeNumber[i], _yCorNumber[i]));
         _textNumber[i].setCharacterSize(90);
 
     }

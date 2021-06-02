@@ -98,15 +98,14 @@ void GameDesign::drawPlayButton(float x, float y)
 }
 void GameDesign::drawSize()
 {
-    for(int i = 0; i < menu._textSize.size(); ++i)
+    for(const auto & i : menu._textSize)
     {
-        _window->draw(menu._textSize[i]);
+        _window->draw(i);
     }
 }
 
 void GameDesign::drawWinNumber()
 {
-    //clearWindow();
     for(int i = 0; i < _size-2; ++i)
     {
         _window->draw(menu._textNumber[i]);
