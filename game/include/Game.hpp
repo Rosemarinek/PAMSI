@@ -8,6 +8,7 @@
 #include <SFML/Window.hpp>
 
 #include "GameDesign.hpp"
+#include "MinMax.hpp"
 
 /*
  * Class Game is responsible for game events
@@ -15,18 +16,20 @@
 class Game
 {
   private:
-    GameDesign game;
+    GameDesign gameDesign;
     sf::Event _event;
 
+    MinMax *minMaxGame;
+
     /*Variable specifying the current appearance of the game */
-    int _gameStatus = 0;
+    int _gameStatus;
     /* Variable specifying the number of winning characters*/
-    int _winNumber = 0;
+    int _winNumber;
     /*variables for storing the mouse position*/
-    int clickX = 0;
-    int clickY = 0;
+    int clickX;
+    int clickY;
     /*variable specifying whose movement is*/
-    int _whoseMove = 0;
+    int _whoseMove;
 
   public:
     /*!
@@ -89,7 +92,8 @@ class Game
 
     /*Constructor and destructor*/
     Game();
-    ~Game();
+    Game(MinMax minMaxGame);
+    //~Game();
 };
 
 #endif // GAME_GAME_HPP

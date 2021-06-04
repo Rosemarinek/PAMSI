@@ -1,12 +1,12 @@
 #include "Game.hpp"
+#include "MinMax.hpp"
 
 int main()
 {
-    // Game object
-    Game game;
 
-    // Game loop
-    game.run();
+     Game game;
 
-    return 0;
+     game.run();
+//    MinMax game(3);
+//    game.play(3);
 }

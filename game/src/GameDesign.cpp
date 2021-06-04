@@ -87,7 +87,7 @@ void GameDesign::drawChoice()
     clearWindow();
     _window->draw(menu._choice);
     drawSize();
-    if(_size>=3)
+    if(_size >= 3)
         drawWinNumber();
 }
 
@@ -98,7 +98,7 @@ void GameDesign::drawPlayButton(float x, float y)
 }
 void GameDesign::drawSize()
 {
-    for(const auto & i : menu._textSize)
+    for(const auto& i : menu._textSize)
     {
         _window->draw(i);
     }
@@ -106,7 +106,7 @@ void GameDesign::drawSize()
 
 void GameDesign::drawWinNumber()
 {
-    for(int i = 0; i < _size-2; ++i)
+    for(int i = 0; i < _size - 2; ++i)
     {
         _window->draw(menu._textNumber[i]);
     }
