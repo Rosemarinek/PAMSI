@@ -27,17 +27,10 @@ class Menu
     std::vector<sf::Text> _textSize;
     std::vector<sf::Text> _textNumber;
 
-    /*Variables for storing text coordinates*/
-    std::vector<float> _xCorSizeNumber;
-    std::vector<float> _yCorSize;
-    std::vector<float> _yCorNumber;
-
     /*!
      * Function initializes start menu
-     * @param width - window width
-     * @param height - window height
      */
-    void initMenu(float width, float height);
+    void initMenu();
 
     void initPlayButton(float x, float y);
     /*!

@@ -38,10 +38,8 @@ class GameDesign
     /*Board objects */
     MainBoard board;
 
-    /*!
-     * Function is responsible for initialization of individual variables
-     */
-    void initVariable(float width,float height);
+    std::vector<sf::Sprite> _setX;
+    std::vector<sf::Sprite> _setO;
     /*!
      * Function is responsible for window initialization
      */

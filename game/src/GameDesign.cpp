@@ -1,12 +1,6 @@
 #include "GameDesign.hpp"
 #include <iostream>
 
-void GameDesign::initVariable(float width, float height)
-{
-    _window = nullptr;
-    _width = width;
-    _height = height;
-}
 
 void GameDesign::initWindow()
 {
@@ -18,10 +12,12 @@ void GameDesign::initWindow()
 
 GameDesign::GameDesign()
 {
-    initVariable(600, 800);
+    _window = nullptr;
+    _width = 600;
+    _height = 800;
     initWindow();
     board.initLogo(_width);
-    menu.initMenu(_width, _height);
+    menu.initMenu();
     menu.initChoice(_width, _height);
 }
 
@@ -38,22 +34,25 @@ void GameDesign::clearWindow()
 void GameDesign::drawBoard()
 {
     clearWindow();
-    board._boards.resize(_size);
+    board._boards.resize(_size*_size);
     _xCor.resize(_size);
     _yCor.resize(_size);
 
     float w = (_width - 100) / (static_cast<float>(_size));
     float h = (_height - 300) / (static_cast<float>(_size));
-    for(auto i = 0; i < _size; ++i)
-    {
-        for(auto j = 0; j < _size; j++)
+    int p=0;
+        for(auto i = 0; i < _size; ++i)
         {
-            _xCor[i] = _firstX + i * w;
-            _yCor[j] = _firstY + j * h;
-            board.initBoard(_xCor[i], _yCor[j], _size);
-            board._boards.push_back(board._board);
+            for(auto j = 0; j < _size; j++)
+            {
+                _xCor[j] = _firstX + j * w;
+                _yCor[i] = _firstY + i * h;
+                board.initBoard(_xCor[j], _yCor[i], _size);
+                board._boards[p]=board._board;
+                p++;
+            }
         }
-    }
+
 
     for(auto& i : board._boards)
     {
@@ -72,14 +71,14 @@ void ::GameDesign::drawMenu()
 
 void GameDesign::drawO(float x, float y)
 {
-    player.initX(x, y, _size);
-    _window->draw(player._x);
+    player.initO(x, y, _size);
+    _window->draw(player._o);
 }
 
 void GameDesign::drawX(float x, float y)
 {
-    player.initO(x, y, _size);
-    _window->draw(player._o);
+    player.initX(x, y, _size);
+    _window->draw(player._x);
 }
 
 void GameDesign::drawChoice()

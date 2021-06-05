@@ -11,7 +11,6 @@ void MinMax::swap()
 
 MinMax::MinMax(int size)
 {
-
     _gameBoard.resize(size);
     for(int i = 0; i < size; ++i)
     {
@@ -53,6 +52,8 @@ void MinMax::placeMarker(int x, int y, char player)
 {
     _gameBoard[x][y] = player;
 }
+
+
 
 void MinMax::printBoard(int size)
 {

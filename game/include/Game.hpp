@@ -25,9 +25,6 @@ class Game
     int _gameStatus;
     /* Variable specifying the number of winning characters*/
     int _winNumber;
-    /*variables for storing the mouse position*/
-    int clickX;
-    int clickY;
     /*variable specifying whose movement is*/
     int _whoseMove;
 
@@ -48,26 +45,21 @@ class Game
      * Function draws X or O depending on the movement
      */
     void moveXorO();
+
     /*!
      * Function changes color of the play button when the mouse cursor is on it
      * @param x - button x coordinate
      * @param y - button y coordinate
      */
-    void onPlay(float x, float y);
-    /*!
-     * Function checks if the button has been clicked
-     * @param x - button x coordinate
-     * @param y - button y coordinate
-     */
-    void pressPlay(float x, float y);
+    void onPlay(const sf::Event& event);
     /*!
      * Function checks if the mouse cursor is on game element depending on the game state
      */
-    void checkMouseStatus();
+    void checkMouseStatus(const sf::Event& event);
     /*!
      *Function checks where and when the mouse button was clicked
      */
-    void checkClickStatus();
+    void checkClickStatus(const sf::Event& event);
     /*!
      *Function draw appropriate game elements depending on the game state
      */
@@ -75,25 +67,19 @@ class Game
     /*!
      * Function changes color of the size number when the mouse cursor is on it
      */
-    void onSize();
+    void onSize(const sf::Event& event);
     /*!
      *Function changes the color of the number indicating the number of characters needed to win when the mouse cursor
      *is on it
      */
-    void onNumber();
-    /*!
-     * Function checks if the number indicating the size of the board has been clicked
-     */
-    void pressSize();
-    /*!
-     * Function checks if the number indicating of characters needed to win has been clicked
-     */
-    void pressNumber();
+    void onNumber(const sf::Event& event);
 
     /*Constructor and destructor*/
     Game();
-    Game(MinMax minMaxGame);
     //~Game();
+    static bool elementPressed(const sf::Event& event, const sf::Sprite& sprite);
+    static bool elementPressed(const sf::Event& event, const sf::Text& text);
+    void movePlayer(int row,int column, int slot);
 };
 
 #endif // GAME_GAME_HPP
