@@ -227,7 +227,7 @@ void Game::movePlayer(int slot)
 
 void Game::moveAI()
 {
-    Move bestMove = minMaxGame->findBestMove(gameDesign._size);
+    Move bestMove = minMaxGame->findBestMove(gameDesign._size, _winNumber);
 
     if(minMaxGame->_computer == 'X' && minMaxGame->_gameBoard[bestMove.row][bestMove.column]==' ')
     {

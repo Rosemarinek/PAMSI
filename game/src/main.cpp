@@ -10,10 +10,9 @@ int main()
      game.run();
 
 //    MinMax game(3);
-//    std::cout<<"Wybierz znak: ";
-//    std::cin>>game._human;
-//    std::cout<<" \n przeciwnik: ";
-//    std::cin>>game._computer;
+//
+//    game._human='X';
+//    game._human='O';
 //    std::cout<<"\n";
 //    game.play(3);
 }

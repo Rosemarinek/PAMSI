@@ -1,5 +1,6 @@
 #include "MinMax.hpp"
 #include <iostream>
+#include <limits>
 
 void MinMax::swap()
 {
@@ -11,8 +12,8 @@ void MinMax::swap()
 
 MinMax::MinMax(int size)
 {
-    _human=' ';
-    _computer=' ';
+    _human = ' ';
+    _computer = ' ';
     _gameBoard.resize(size);
     for(int i = 0; i < size; ++i)
     {
@@ -27,17 +28,6 @@ MinMax::MinMax(int size)
         }
     }
 }
-
-// void MinMax::movePlayer()
-//{
-//     int row, column;
-//     std::cout << " Enter your row: ";
-//     std::cin >> row;
-//     std::cout << "Enter your column: ";
-//     std::cin >> column;
-//     std::cout << "\n";
-//     placeMarker(row, column, _opponent);
-// }
 
 void MinMax::movePlayer()
 {
@@ -82,50 +72,86 @@ bool MinMax::isEmpty(int size)
     return false;
 }
 
-int MinMax::winner()
+int MinMax::winner(int size, int winChar)
 {
-    for(int i = 0; i < 3; ++i)
+    int counter = 1;
+    for(int i = 0; i < size; ++i)
     {
         // row
-        if(_gameBoard[i][0] == _gameBoard[i][1] && _gameBoard[i][1] == _gameBoard[i][2])
+        for(int j = 0; j < size - 1; ++j)
         {
-            if(_gameBoard[i][0] == _computer)
+            if(_gameBoard[i][j] == _gameBoard[i][j + 1])
+            {
+                counter++;
+            }
+            else
+                counter = 1;
+
+            if(_gameBoard[i][j] == _computer && counter == winChar)
                 return 10;
-            else if(_gameBoard[i][0] == _human)
+            else if(_gameBoard[i][j] == _human && counter == winChar)
                 return -10;
         }
-
+        counter = 1;
         // column
-        if(_gameBoard[0][i] == _gameBoard[1][i] && _gameBoard[1][i] == _gameBoard[2][i])
+        for(int j = 0; j < size - 1; ++j)
         {
-            if(_gameBoard[0][i] == _computer)
+            if(_gameBoard[j][i] == _gameBoard[j + 1][i]){
+                counter++;
+            }
+            else
+                counter = 1;
+
+            if(_gameBoard[j][i] == _computer && counter == winChar)
                 return 10;
-            else if(_gameBoard[0][i] == _human)
+            else if(_gameBoard[j][i] == _human && counter == winChar)
                 return -10;
         }
     }
+    counter=1;
     // diagonal
-    if(_gameBoard[0][0] == _gameBoard[1][1] && _gameBoard[1][1] == _gameBoard[2][2])
+    for(int i = 0; i < size-1; ++i)
     {
-        if(_gameBoard[1][1] == _computer)
-            return 10;
-        else if(_gameBoard[1][1] == _human)
-            return -10;
-    }
-    if(_gameBoard[0][2] == _gameBoard[1][1] && _gameBoard[1][1] == _gameBoard[2][0])
-    {
-        if(_gameBoard[1][1] == _computer)
-            return 10;
-        else if(_gameBoard[1][1] == _human)
-            return -10;
-    }
+        if(_gameBoard[i][i] == _gameBoard[i+1][i+1])
+        {
+            counter++;
+        }
+        else
+            counter=1;
 
+        if(_gameBoard[i][i] == _computer&& counter == winChar)
+            return 10;
+        else if(_gameBoard[i][i] == _human && counter == winChar)
+            return -10;
+
+    }
+    //backwards diagonal
+    counter=1;
+    for(int i = 0; i < size -1; ++i)
+    {
+        if(_gameBoard[i][size-1-i] == _gameBoard[i+1][size-2-i])
+        {
+            counter++;
+        }
+        else
+            counter=1;
+        if(_gameBoard[i][size-1-i] == _computer && counter == winChar)
+            return 10;
+        else if(_gameBoard[i][size-1-i] == _human && counter == winChar)
+            return -10;
+    }
     return 0; // nobody won
 }
 
-int MinMax::computerMove(int depth, bool isMax, int size)
+
+int MinMax::computerMove(int depth, bool isMax, int size, int winChar)
 {
-    int score = winner();
+    int maxDepth[]={0,0,0,8,4,4,3,3,3,2};
+    int score = winner(size, winChar);
+
+    if(depth==maxDepth[size])
+        return 0;
+
     if(score == 10)
         return score;
 
@@ -137,7 +163,7 @@ int MinMax::computerMove(int depth, bool isMax, int size)
 
     if(isMax)
     {
-        int best = -1000;
+        int best = std::numeric_limits<int>::min();
 
         for(int i = 0; i < size; i++)
         {
@@ -147,7 +173,7 @@ int MinMax::computerMove(int depth, bool isMax, int size)
                 if(_gameBoard[i][j] == ' ')
                 {
                     placeMarker(i, j, _computer);
-                    best = std::max(best, computerMove(depth + 1, !isMax, size));
+                    best = std::max(best, computerMove(depth + 1, !isMax, size, winChar));
                     placeMarker(i, j, ' ');
                 }
             }
@@ -156,7 +182,7 @@ int MinMax::computerMove(int depth, bool isMax, int size)
     }
     else
     {
-        int best = 1000;
+        int best = std::numeric_limits<int>::max();
 
         for(int i = 0; i < size; i++)
         {
@@ -165,9 +191,9 @@ int MinMax::computerMove(int depth, bool isMax, int size)
 
                 if(_gameBoard[i][j] == ' ')
                 {
-                    placeMarker(i, j, _human);
-                    best = std::min(best, computerMove(depth + 1, !isMax, size));
-                    placeMarker(i, j, ' ');
+                        placeMarker(i, j, _human);
+                        best = std::min(best, computerMove(depth + 1, !isMax, size, winChar));
+                        placeMarker(i, j, ' ');
                 }
             }
         }
@@ -175,10 +201,10 @@ int MinMax::computerMove(int depth, bool isMax, int size)
     }
 }
 
-Move MinMax::findBestMove(int size)
+Move MinMax::findBestMove(int size, int winChar)
 {
     int bestVal = -1000;
-    Move bestMove{-1,-1};
+    Move bestMove{-1, -1};
 
     for(int i = 0; i < size; i++)
     {
@@ -187,7 +213,7 @@ Move MinMax::findBestMove(int size)
             if(_gameBoard[i][j] == ' ')
             {
                 placeMarker(i, j, _computer);
-                int moveVal = computerMove(0, false, size);
+                int moveVal = computerMove(0, false, size, winChar);
 
                 placeMarker(i, j, ' ');
                 if(moveVal > bestVal)
@@ -202,7 +228,7 @@ Move MinMax::findBestMove(int size)
     return bestMove;
 }
 
-void MinMax::play(int size)
+void MinMax::play(int size, int winChar)
 {
     MinMax game(3);
     printBoard(size);
@@ -213,7 +239,7 @@ void MinMax::play(int size)
         if(_currPlayer == _human)
         {
             movePlayer();
-            int playerWon = winner();
+            int playerWon = winner(size, winChar);
             if(playerWon == -10)
             {
                 printBoard(size);
@@ -223,9 +249,9 @@ void MinMax::play(int size)
         }
         else
         {
-            Move bestMove = findBestMove(size);
+            Move bestMove = findBestMove(size, winChar);
             placeMarker(bestMove.row, bestMove.column, _computer);
-            int playerWon = winner();
+            int playerWon = winner(size, winChar);
             if(playerWon == 10)
             {
                 printBoard(size);
@@ -238,7 +264,7 @@ void MinMax::play(int size)
         printBoard(size);
     }
 
-    int playerWon = winner();
+    int playerWon = winner(size, winChar);
 
     if(playerWon == 0)
         std::cout << "\n TIE! \n";
@@ -246,8 +272,8 @@ void MinMax::play(int size)
 
 MinMax::MinMax(int size, MinMax& otherMinMax)
 {
-    _human=' ';
-    _computer=' ';
+    _human = ' ';
+    _computer = ' ';
     for(int i = 0; i < size; ++i)
     {
         for(int j = 0; j < size; ++j)
