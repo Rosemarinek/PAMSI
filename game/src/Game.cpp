@@ -28,8 +28,7 @@ void Game::pollEvents()
                     _winNumber = 0;
                     gameDesign.clearWindow();
                     _gameStatus = 0;
-
-                    // TODO: Back to menu
+                    _playerChar=' ';
                 }
                 break;
             case sf::Event::MouseMoved:
@@ -54,6 +53,7 @@ Game::Game()
     _gameStatus = 0;
     _winNumber = 0;
     _whoseMove = 0;
+    _playerChar=' ';
 }
 
 void Game::run()
@@ -112,7 +112,8 @@ void Game::checkMouseStatus(const sf::Event& event)
             onNumber(event);
             break;
         case 3:
-            onPlay(event);
+           onX(event);
+           onO(event);
             break;
         case 4:
             _gameStatus = 5;
@@ -153,7 +154,16 @@ void Game::checkClickStatus(const sf::Event& event)
             }
             break;
         case 3:
-            if(elementPressed(event, gameDesign.menu._play))
+            if(elementPressed(event, gameDesign.player._x))
+            {
+                _playerChar='X';
+                gameDesign.player._x.setColor(sf::Color(255, 255, 255));
+            }
+            else if(elementPressed(event,gameDesign.player._o))
+            {
+                _playerChar='O';
+                gameDesign.player._o.setColor(sf::Color(255, 255, 255));
+            }
                 _gameStatus = _gameStatus + 1;
             break;
         case 5:
@@ -167,7 +177,7 @@ void Game::checkClickStatus(const sf::Event& event)
 void Game::movePlayer(int row, int column, int slot)
 {
 
-    gameDesign.drawO(gameDesign.board._boards[slot].getPosition().x, gameDesign.board._boards[slot].getPosition().y);
+   // gameDesign.drawO(gameDesign.board._boards[slot].getPosition().x, gameDesign.board._boards[slot].getPosition().y);
     minMaxGame->placeMarker(row, column, minMaxGame->_opponent);
     minMaxGame->printBoard(gameDesign._size);
     gameDesign._window->display();
@@ -186,13 +196,13 @@ void Game::moveXorO()
             if(minMaxGame->_currPlayer=='X')
             {
                 gameDesign.drawX(gameDesign.board._boards[slot].getPosition().x,
-                                 gameDesign.board._boards[slot].getPosition().y);
+                                 gameDesign.board._boards[slot].getPosition().y, gameDesign._size);
                 gameDesign._window->display();
             }
             else
             {
                 gameDesign.drawO(gameDesign.board._boards[slot].getPosition().x,
-                                 gameDesign.board._boards[slot].getPosition().y);
+                                 gameDesign.board._boards[slot].getPosition().y, gameDesign._size);
                 gameDesign._window->display();
 
             }
@@ -217,14 +227,17 @@ void Game::checkGameStatus()
             break;
         case 3:
             gameDesign.drawChoice();
-            gameDesign.drawPlayButton(gameDesign._width / 3, gameDesign._height / 1.7);
-            break;
+            gameDesign.drawX(gameDesign._width/3.8,gameDesign._height/1.5,4);
+            gameDesign.drawO(gameDesign._width/1.8,gameDesign._height/1.5,4);
+                    break;
         case 4:
             if(minMaxGame == nullptr)
             {
                 minMaxGame = new MinMax(gameDesign._size);
             }
             gameDesign.drawBoard();
+            break;
+        default:
             break;
     }
 }
@@ -262,5 +275,37 @@ void Game::onNumber(const sf::Event& event)
         {
             gameDesign.menu._textNumber[i].setFillColor(sf::Color::Black);
         }
+    }
+}
+
+void Game::onX(const sf::Event& event)
+{
+
+    if(event.mouseMove.x > gameDesign.player._x.getPosition().x &&
+       event.mouseMove.x < gameDesign.player._x.getPosition().x + 170 &&
+       event.mouseMove.y > gameDesign.player._x.getPosition().y &&
+       event.mouseMove.x < gameDesign.player._x.getPosition().y+ 170)
+    {
+        gameDesign.player._x.setColor(sf::Color(0, 255, 0));
+    }
+    else
+    {
+        gameDesign.player._x.setColor(sf::Color(255, 255, 255));
+    }
+}
+
+void Game::onO(const sf::Event& event)
+{
+
+    if(event.mouseMove.x > gameDesign.player._o.getPosition().x &&
+       event.mouseMove.x < gameDesign.player._o.getPosition().x + 170 &&
+       event.mouseMove.y > gameDesign.player._o.getPosition().y &&
+       event.mouseMove.x < gameDesign.player._o.getPosition().y+ 170)
+    {
+        gameDesign.player._o.setColor(sf::Color(0, 255, 0));
+    }
+    else
+    {
+        gameDesign.player._o.setColor(sf::Color(255, 255, 255));
     }
 }

@@ -38,8 +38,6 @@ class GameDesign
     /*Board objects */
     MainBoard board;
 
-    std::vector<sf::Sprite> _setX;
-    std::vector<sf::Sprite> _setO;
     /*!
      * Function is responsible for window initialization
      */
@@ -67,14 +65,16 @@ class GameDesign
      * Function draws X on the selected location
      * @param x - x coordinate
      * @param y - y coordinate
+     * @param size - board size
      */
-    void drawX(float x, float y);
+    void drawX(float x, float y, int size);
     /*!
       * Function draws O on the selected location
       * @param x - x coordinate
       * @param y - y coordinate
+      * @param size - board size
       */
-    void drawO(float x, float y);
+    void drawO(float x, float y, int size);
     /*!
      * Function draws the selection menu
      */

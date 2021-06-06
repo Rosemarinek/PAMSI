@@ -28,7 +28,6 @@ class Player
      * @param size - board size
      */
     void initX(float x, float y, int size);
-
     /*
      * Function loads the file with O texture and initializes it. Takes the coordinates indicating where to put
      * O

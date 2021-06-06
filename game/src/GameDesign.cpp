@@ -69,15 +69,15 @@ void ::GameDesign::drawMenu()
     drawPlayButton(_width / 3, _height / 2.3);
 }
 
-void GameDesign::drawO(float x, float y)
+void GameDesign::drawO(float x, float y, int size)
 {
-    player.initO(x, y, _size);
+    player.initO(x, y, size);
     _window->draw(player._o);
 }
 
-void GameDesign::drawX(float x, float y)
+void GameDesign::drawX(float x, float y, int size)
 {
-    player.initX(x, y, _size);
+    player.initX(x, y, size);
     _window->draw(player._x);
 }
 

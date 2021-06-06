@@ -29,7 +29,9 @@ class MinMax
     Move findBestMove(int size);
 
     void placeMarker(int x, int y, char player);
-    void movePlayer();
+
+
+    //TODO: improve constructor
 
 };
 

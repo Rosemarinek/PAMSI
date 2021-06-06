@@ -31,7 +31,9 @@ class Menu
      * Function initializes start menu
      */
     void initMenu();
-
+    /*!
+    * Function initializes play button
+    */
     void initPlayButton(float x, float y);
     /*!
      * Function initializes selection menu
