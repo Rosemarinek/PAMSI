@@ -12,8 +12,8 @@ class MinMax
 {
   public:
     std::vector<std::vector<char>> _gameBoard;
-    char _player = 'X';
-    char _opponent = 'O';
+//    char _player = 'X';
+//    char _opponent = 'O';
 
     char _human;
     char _computer;

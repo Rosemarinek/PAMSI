@@ -3,10 +3,10 @@
 
 void MinMax::swap()
 {
-    if(_currPlayer == _player)
-        _currPlayer = _opponent;
-    else if(_currPlayer == _opponent)
-        _currPlayer = _player;
+    if(_currPlayer == _human)
+        _currPlayer = _computer;
+    else if(_currPlayer == _computer)
+        _currPlayer = _human;
 }
 
 MinMax::MinMax(int size)
@@ -47,15 +47,13 @@ void MinMax::movePlayer()
     std::cout << "Enter your column: ";
     std::cin >> column;
     std::cout << "\n";
-    placeMarker(row, column, _opponent);
+    placeMarker(row, column, _human);
 }
 
 void MinMax::placeMarker(int x, int y, char player)
 {
     _gameBoard[x][y] = player;
 }
-
-
 
 void MinMax::printBoard(int size)
 {
@@ -167,7 +165,6 @@ int MinMax::computerMove(int depth, bool isMax, int size)
 
                 if(_gameBoard[i][j] == ' ')
                 {
-
                     placeMarker(i, j, _human);
                     best = std::min(best, computerMove(depth + 1, !isMax, size));
                     placeMarker(i, j, ' ');
@@ -213,7 +210,7 @@ void MinMax::play(int size)
     for(int i = 0; i < size * size; ++i)
     {
         std::cout << "It's player " << _currPlayer << "'s turn.";
-        if(_currPlayer == 'O')
+        if(_currPlayer == _human)
         {
             movePlayer();
             int playerWon = winner();

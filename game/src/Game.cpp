@@ -99,6 +99,8 @@ void Game::checkMouseStatus(const sf::Event& event)
             onO(event);
             break;
         case 4:
+            if( minMaxGame->_computer =='X')
+                moveAI();
             _gameStatus = 5;
             break;
         default:
@@ -122,6 +124,7 @@ void Game::checkClickStatus(const sf::Event& event)
                     gameDesign.menu._textSize[i].setFillColor(sf::Color::Red);
                     gameDesign._size = i + 3;
                     _gameStatus = _gameStatus + 1;
+                    initSlot();
                 }
             }
             break;
@@ -168,36 +171,27 @@ void Game::checkClickStatus(const sf::Event& event)
                 _gameStatus = 4;
                 _whoseMove = 0;
                 minMaxGame->_currPlayer = 'X';
-              //  minMaxGame = new MinMax(gameDesign._size);
                 minMaxGame->clearBoard();
             }
             else
             {
-                movePlayer();
-//                if(minMaxGame->_human == 'X')
-//                {
-//                    movePlayer();
-//                    moveAI();
-//                }
-//                else
-//                {
-//                    moveAI();
-//                    movePlayer();
-//                }
+                for(int slot = 0; slot < gameDesign.board._boards.size(); ++slot)
+                {
+                    if(elementPressed(_event, gameDesign.board._boards[slot]))
+                    {
+                        movePlayer(slot);
+                        moveAI();
+                    }
+                }
             }
-
             break;
         default:
             break;
     }
 }
 
-void Game::movePlayer()
+void Game::movePlayer(int slot)
 {
-    for(int slot = 0; slot < gameDesign.board._boards.size(); ++slot)
-    {
-        if(elementPressed(_event, gameDesign.board._boards[slot]))
-        {
             int matrixSlot = slot;
             matrixSlot++;
             int row, column;
@@ -228,34 +222,30 @@ void Game::movePlayer()
                 gameDesign._window->display();
                 minMaxGame->printBoard(gameDesign._size);
             }
-           // moveAI();
-        }
-    }
-    minMaxGame->swap();
+   minMaxGame->swap();
 }
 
 void Game::moveAI()
 {
     Move bestMove = minMaxGame->findBestMove(gameDesign._size);
 
-    if(minMaxGame->_computer == 'X')
+    if(minMaxGame->_computer == 'X' && minMaxGame->_gameBoard[bestMove.row][bestMove.column]==' ')
     {
-        gameDesign.drawX(gameDesign.board._boards[bestMove.row].getPosition().x,
-                         gameDesign.board._boards[bestMove.column].getPosition().y, gameDesign._size);
+        gameDesign.drawX(gameDesign.board._boards[_slot[bestMove.row][bestMove.column]].getPosition().x,
+                         gameDesign.board._boards[_slot[bestMove.row][bestMove.column]].getPosition().y, gameDesign._size);
         minMaxGame->placeMarker(bestMove.row, bestMove.column, minMaxGame->_computer);
         gameDesign._window->display();
         minMaxGame->printBoard(gameDesign._size);
     }
-    else
+    else if(minMaxGame->_computer == 'O' && minMaxGame->_gameBoard[bestMove.row][bestMove.column]==' ')
     {
-        gameDesign.drawO(gameDesign.board._boards[bestMove.row].getPosition().x,
-                         gameDesign.board._boards[bestMove.column].getPosition().y, gameDesign._size);
+        gameDesign.drawO(gameDesign.board._boards[_slot[bestMove.row][bestMove.column]].getPosition().x,
+                         gameDesign.board._boards[_slot[bestMove.row][bestMove.column]].getPosition().y, gameDesign._size);
         minMaxGame->placeMarker(bestMove.row, bestMove.column, minMaxGame->_computer);
         gameDesign._window->display();
         minMaxGame->printBoard(gameDesign._size);
     }
-
-    minMaxGame->swap();
+   minMaxGame->swap();
 }
 
 void Game::checkGameStatus()
@@ -386,5 +376,22 @@ void Game::onRestart(const sf::Event& event)
     else
     {
         gameDesign.board._restart.setColor(sf::Color(255, 255, 255));
+    }
+}
+
+void Game::initSlot()
+{
+    _slot.resize(gameDesign._size);
+    for(int i = 0; i < _slot.size(); ++i)
+    {
+        _slot[i].resize(gameDesign._size);
+    }
+
+    for(int i = 0; i < _slot.size(); ++i)
+    {
+        for(int j = 0; j < _slot.size(); ++j)
+        {
+            _slot[i][j] = j+i*3;
+        }
     }
 }

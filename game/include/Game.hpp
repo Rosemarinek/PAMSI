@@ -21,6 +21,7 @@ class Game
 
     MinMax* minMaxGame;
 
+
     /*Variable specifying the current appearance of the game */
     int _gameStatus;
     /* Variable specifying the number of winning characters*/
@@ -30,6 +31,7 @@ class Game
     /*variable specifying the player character*/
   // char _playerChar;
 
+    std::vector<std::vector<int>> _slot;
   public:
     /*!
      * Function through a loop pops the event on top of the event queue
@@ -99,7 +101,7 @@ class Game
     static bool elementPressed(const sf::Event& event, const sf::Text& text);
 
    // void movePlayer(int row, int column, int slot);
-     void movePlayer();
+     void movePlayer(int slot);
     void moveAI();
 
     void onBack(const sf::Event& event);
@@ -107,6 +109,8 @@ class Game
     /*Constructor and destructor*/
     Game();
     ~Game(){};
+
+   void initSlot();
 };
 
 #endif // GAME_GAME_HPP
