@@ -93,6 +93,10 @@ class GameDesign
      * @param y - button y coordinate
      */
     void drawPlayButton(float x, float y);
+
+    void drawBack(float  x, float y, float scale);
+
+    void drawRestart(float  x, float y, float scale);
 };
 
 #endif // GAME_GAMEDESIGN_HPP

@@ -20,3 +20,23 @@ void MainBoard::initBoard(float x, float y, int size)
     _board.setScale(sf::Vector2f(scale, scale));
     _board.setPosition(x, y);
 }
+
+void MainBoard::initBack(float x, float y, float scale)
+{
+    _imBack.loadFromFile("../resources/textures/backtomenu.png");
+    _texBack.loadFromImage(_imBack);
+    _texBack.setSmooth(true);
+    _back.setTexture(_texBack);
+    _back.setScale(sf::Vector2f(scale, scale));
+    _back.setPosition(x, y);
+}
+
+void MainBoard::initRestart(float x, float y, float scale)
+{
+    _imRestart.loadFromFile("../resources/textures/restart.png");
+    _texRestart.loadFromImage(_imRestart);
+    _texRestart.setSmooth(true);
+    _restart.setTexture(_texRestart);
+    _restart.setScale(sf::Vector2f(scale, scale));
+    _restart.setPosition(x, y);
+}

@@ -110,3 +110,15 @@ void GameDesign::drawWinNumber()
         _window->draw(menu._textNumber[i]);
     }
 }
+
+void GameDesign::drawBack(float x, float y, float scale)
+{
+    board.initBack(x,y,scale);
+    _window->draw(board._back);
+}
+
+void GameDesign::drawRestart(float x, float y, float scale)
+{
+    board.initRestart(x,y,scale);
+    _window->draw(board._restart);
+}

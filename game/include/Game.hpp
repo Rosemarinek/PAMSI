@@ -28,7 +28,7 @@ class Game
     /*variable specifying whose movement is*/
     int _whoseMove;
     /*variable specifying the player character*/
-    char _playerChar;
+  // char _playerChar;
 
   public:
     /*!
@@ -43,10 +43,6 @@ class Game
      * Function that starts the game
      */
     void run();
-    /*!
-     * Function draws X or O depending on the movement
-     */
-    void moveXorO();
     /*!
      * Function changes color of the play button when the mouse cursor is on it
      * @param event - argument defines a system event
@@ -102,8 +98,12 @@ class Game
      */
     static bool elementPressed(const sf::Event& event, const sf::Text& text);
 
-    void movePlayer(int row, int column, int slot);
+   // void movePlayer(int row, int column, int slot);
+     void movePlayer();
+    void moveAI();
 
+    void onBack(const sf::Event& event);
+    void onRestart(const sf::Event& event);
     /*Constructor and destructor*/
     Game();
     ~Game(){};

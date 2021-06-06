@@ -15,6 +15,9 @@ class MinMax
     char _player = 'X';
     char _opponent = 'O';
 
+    char _human;
+    char _computer;
+
     char _currPlayer = 'X';
 
     explicit MinMax(int size);
@@ -29,9 +32,8 @@ class MinMax
     Move findBestMove(int size);
 
     void placeMarker(int x, int y, char player);
-
-
-    //TODO: improve constructor
+    void movePlayer();
+    void clearBoard();
 
 };
 

@@ -20,6 +20,14 @@ class MainBoard
     sf::Sprite _board;
     std::vector<sf::Sprite> _boards;
 
+    sf::Image _imBack;
+    sf::Texture _texBack;
+    sf::Sprite _back;
+
+    sf::Image _imRestart;
+    sf::Texture _texRestart;
+    sf::Sprite _restart;
+
     /*!
      * Function loads the file with logo texture and initializes it
      * @param width - window width
@@ -33,6 +41,9 @@ class MainBoard
      * @param size - board size
      */
     void initBoard(float x, float y, int size);
+
+    void initBack(float x, float y, float scale);
+    void initRestart(float x, float y, float scale);
 };
 
 #endif // GAME_MAINBOARD_HPP

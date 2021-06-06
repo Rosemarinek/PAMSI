@@ -11,6 +11,8 @@ void MinMax::swap()
 
 MinMax::MinMax(int size)
 {
+    _human=' ';
+    _computer=' ';
     _gameBoard.resize(size);
     for(int i = 0; i < size; ++i)
     {
@@ -89,34 +91,34 @@ int MinMax::winner()
         // row
         if(_gameBoard[i][0] == _gameBoard[i][1] && _gameBoard[i][1] == _gameBoard[i][2])
         {
-            if(_gameBoard[i][0] == _player)
+            if(_gameBoard[i][0] == _computer)
                 return 10;
-            else if(_gameBoard[i][0] == _opponent)
+            else if(_gameBoard[i][0] == _human)
                 return -10;
         }
 
         // column
         if(_gameBoard[0][i] == _gameBoard[1][i] && _gameBoard[1][i] == _gameBoard[2][i])
         {
-            if(_gameBoard[0][i] == _player)
+            if(_gameBoard[0][i] == _computer)
                 return 10;
-            else if(_gameBoard[0][i] == _opponent)
+            else if(_gameBoard[0][i] == _human)
                 return -10;
         }
     }
     // diagonal
     if(_gameBoard[0][0] == _gameBoard[1][1] && _gameBoard[1][1] == _gameBoard[2][2])
     {
-        if(_gameBoard[1][1] == _player)
+        if(_gameBoard[1][1] == _computer)
             return 10;
-        else if(_gameBoard[1][1] == _opponent)
+        else if(_gameBoard[1][1] == _human)
             return -10;
     }
     if(_gameBoard[0][2] == _gameBoard[1][1] && _gameBoard[1][1] == _gameBoard[2][0])
     {
-        if(_gameBoard[1][1] == _player)
+        if(_gameBoard[1][1] == _computer)
             return 10;
-        else if(_gameBoard[1][1] == _opponent)
+        else if(_gameBoard[1][1] == _human)
             return -10;
     }
 
@@ -146,7 +148,7 @@ int MinMax::computerMove(int depth, bool isMax, int size)
 
                 if(_gameBoard[i][j] == ' ')
                 {
-                    placeMarker(i, j, _player);
+                    placeMarker(i, j, _computer);
                     best = std::max(best, computerMove(depth + 1, !isMax, size));
                     placeMarker(i, j, ' ');
                 }
@@ -166,7 +168,7 @@ int MinMax::computerMove(int depth, bool isMax, int size)
                 if(_gameBoard[i][j] == ' ')
                 {
 
-                    placeMarker(i, j, _opponent);
+                    placeMarker(i, j, _human);
                     best = std::min(best, computerMove(depth + 1, !isMax, size));
                     placeMarker(i, j, ' ');
                 }
@@ -179,9 +181,7 @@ int MinMax::computerMove(int depth, bool isMax, int size)
 Move MinMax::findBestMove(int size)
 {
     int bestVal = -1000;
-    Move bestMove;
-    bestMove.row = -1;
-    bestMove.column = -1;
+    Move bestMove{-1,-1};
 
     for(int i = 0; i < size; i++)
     {
@@ -189,7 +189,7 @@ Move MinMax::findBestMove(int size)
         {
             if(_gameBoard[i][j] == ' ')
             {
-                placeMarker(i, j, _player);
+                placeMarker(i, j, _computer);
                 int moveVal = computerMove(0, false, size);
 
                 placeMarker(i, j, ' ');
@@ -227,12 +227,12 @@ void MinMax::play(int size)
         else
         {
             Move bestMove = findBestMove(size);
-            placeMarker(bestMove.row, bestMove.column, _player);
+            placeMarker(bestMove.row, bestMove.column, _computer);
             int playerWon = winner();
             if(playerWon == 10)
             {
                 printBoard(size);
-                std::cout << "\n You lose! \n";
+                std::cout << "\n You lost! \n";
                 break;
             }
         }
@@ -249,11 +249,23 @@ void MinMax::play(int size)
 
 MinMax::MinMax(int size, MinMax& otherMinMax)
 {
+    _human=' ';
+    _computer=' ';
     for(int i = 0; i < size; ++i)
     {
         for(int j = 0; j < size; ++j)
         {
             _gameBoard[i][j] = otherMinMax._gameBoard[i][j];
+        }
+    }
+}
+void MinMax::clearBoard()
+{
+    for(int i = 0; i < _gameBoard.size(); ++i)
+    {
+        for(int j = 0; j < _gameBoard.size(); ++j)
+        {
+            _gameBoard[i][j] = ' ';
         }
     }
 }

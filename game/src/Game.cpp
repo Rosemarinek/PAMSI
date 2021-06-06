@@ -14,23 +14,6 @@ void Game::pollEvents()
             case sf::Event::KeyPressed:
                 if(_event.key.code == sf::Keyboard::Escape)
                     gameDesign._window->close();
-                else if(_event.key.code == sf::Keyboard::R && _gameStatus == 5)
-                {
-                    gameDesign.drawBoard();
-                    _whoseMove = 0;
-                    minMaxGame = new MinMax(gameDesign._size);
-                }
-                else if(_event.key.code == sf::Keyboard::M)
-                {
-                    minMaxGame = new MinMax(gameDesign._size);
-                    _whoseMove = 0;
-                    gameDesign._size = 0;
-                    _winNumber = 0;
-                    gameDesign.clearWindow();
-                    _gameStatus = 0;
-                    _playerChar=' ';
-                }
-                break;
             case sf::Event::MouseMoved:
                 checkMouseStatus(_event);
                 break;
@@ -53,7 +36,6 @@ Game::Game()
     _gameStatus = 0;
     _winNumber = 0;
     _whoseMove = 0;
-    _playerChar=' ';
 }
 
 void Game::run()
@@ -68,7 +50,8 @@ void Game::run()
 
 bool Game::elementPressed(const sf::Event& event, const sf::Sprite& sprite)
 {
-    if(sprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+    if(sprite.getGlobalBounds().contains(static_cast<float>(event.mouseButton.x),
+                                         static_cast<float>(event.mouseButton.y)))
         return true;
     else
         return false;
@@ -76,7 +59,8 @@ bool Game::elementPressed(const sf::Event& event, const sf::Sprite& sprite)
 
 bool Game::elementPressed(const sf::Event& event, const sf::Text& text)
 {
-    if(text.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+    if(text.getGlobalBounds().contains(static_cast<float>(event.mouseButton.x),
+                                       static_cast<float>(event.mouseButton.y)))
         return true;
     else
         return false;
@@ -84,11 +68,10 @@ bool Game::elementPressed(const sf::Event& event, const sf::Text& text)
 
 void Game::onPlay(const sf::Event& event)
 {
-
-    if(event.mouseMove.x > gameDesign.menu._play.getPosition().x &&
-       (event.mouseMove.x < gameDesign.menu._play.getPosition().x + 220) &&
-       event.mouseMove.y > gameDesign.menu._play.getPosition().y &&
-       (event.mouseMove.y < gameDesign.menu._play.getPosition().y + 220))
+    if(static_cast<float>(event.mouseMove.x) > gameDesign.menu._play.getPosition().x &&
+       (static_cast<float>(event.mouseMove.x) < gameDesign.menu._play.getPosition().x + 220) &&
+        static_cast<float>(event.mouseMove.y) > gameDesign.menu._play.getPosition().y &&
+       (static_cast<float>(event.mouseMove.y) < gameDesign.menu._play.getPosition().y + 220))
     {
         gameDesign.menu._play.setColor(sf::Color(140, 140, 140));
     }
@@ -112,8 +95,8 @@ void Game::checkMouseStatus(const sf::Event& event)
             onNumber(event);
             break;
         case 3:
-           onX(event);
-           onO(event);
+            onX(event);
+            onO(event);
             break;
         case 4:
             _gameStatus = 5;
@@ -156,61 +139,124 @@ void Game::checkClickStatus(const sf::Event& event)
         case 3:
             if(elementPressed(event, gameDesign.player._x))
             {
-                _playerChar='X';
+                minMaxGame->_human = 'X';
+                minMaxGame->_computer = 'O';
                 gameDesign.player._x.setColor(sf::Color(255, 255, 255));
             }
-            else if(elementPressed(event,gameDesign.player._o))
+            else if(elementPressed(event, gameDesign.player._o))
             {
-                _playerChar='O';
+                minMaxGame->_human = 'O';
+                minMaxGame->_computer = 'X';
                 gameDesign.player._o.setColor(sf::Color(255, 255, 255));
             }
-                _gameStatus = _gameStatus + 1;
+            _gameStatus = _gameStatus + 1;
             break;
         case 5:
-            moveXorO();
+            if(elementPressed(event, gameDesign.board._back))
+            {
+                _gameStatus = 0;
+                _whoseMove = 0;
+                gameDesign._size = 0;
+                _winNumber = 0;
+                minMaxGame->_computer = ' ';
+                minMaxGame->_human = ' ';
+                minMaxGame = nullptr;
+                gameDesign.clearWindow();
+            }
+            else if(elementPressed(event, gameDesign.board._restart))
+            {
+                _gameStatus = 4;
+                _whoseMove = 0;
+                minMaxGame->_currPlayer = 'X';
+              //  minMaxGame = new MinMax(gameDesign._size);
+                minMaxGame->clearBoard();
+            }
+            else
+            {
+                movePlayer();
+//                if(minMaxGame->_human == 'X')
+//                {
+//                    movePlayer();
+//                    moveAI();
+//                }
+//                else
+//                {
+//                    moveAI();
+//                    movePlayer();
+//                }
+            }
+
             break;
         default:
             break;
     }
 }
 
-void Game::movePlayer(int row, int column, int slot)
+void Game::movePlayer()
 {
-
-   // gameDesign.drawO(gameDesign.board._boards[slot].getPosition().x, gameDesign.board._boards[slot].getPosition().y);
-    minMaxGame->placeMarker(row, column, minMaxGame->_opponent);
-    minMaxGame->printBoard(gameDesign._size);
-    gameDesign._window->display();
-    _whoseMove++;
-    minMaxGame->swap();
-    gameDesign._window->display();
-}
-
-void Game::moveXorO()
-{
-
     for(int slot = 0; slot < gameDesign.board._boards.size(); ++slot)
     {
         if(elementPressed(_event, gameDesign.board._boards[slot]))
         {
-            if(minMaxGame->_currPlayer=='X')
+            int matrixSlot = slot;
+            matrixSlot++;
+            int row, column;
+            row = matrixSlot / gameDesign._size;
+            if(matrixSlot % gameDesign._size == 0)
             {
-                gameDesign.drawX(gameDesign.board._boards[slot].getPosition().x,
-                                 gameDesign.board._boards[slot].getPosition().y, gameDesign._size);
-                gameDesign._window->display();
+                row = row - 1;
+                column = gameDesign._size - 1;
             }
             else
             {
+                column = matrixSlot % gameDesign._size - 1;
+            }
+
+            if(minMaxGame->_human == 'X' && minMaxGame->_gameBoard[row][column]==' ')
+            {
+                gameDesign.drawX(gameDesign.board._boards[slot].getPosition().x,
+                                 gameDesign.board._boards[slot].getPosition().y, gameDesign._size);
+                minMaxGame->placeMarker(row, column, minMaxGame->_human);
+                gameDesign._window->display();
+                minMaxGame->printBoard(gameDesign._size);
+            }
+            else if(minMaxGame->_human == 'O' && minMaxGame->_gameBoard[row][column]==' ')
+            {
                 gameDesign.drawO(gameDesign.board._boards[slot].getPosition().x,
                                  gameDesign.board._boards[slot].getPosition().y, gameDesign._size);
+                minMaxGame->placeMarker(row, column, minMaxGame->_human);
                 gameDesign._window->display();
-
+                minMaxGame->printBoard(gameDesign._size);
             }
+           // moveAI();
         }
     }
     minMaxGame->swap();
 }
 
+void Game::moveAI()
+{
+    Move bestMove = minMaxGame->findBestMove(gameDesign._size);
+
+    if(minMaxGame->_computer == 'X')
+    {
+        gameDesign.drawX(gameDesign.board._boards[bestMove.row].getPosition().x,
+                         gameDesign.board._boards[bestMove.column].getPosition().y, gameDesign._size);
+        minMaxGame->placeMarker(bestMove.row, bestMove.column, minMaxGame->_computer);
+        gameDesign._window->display();
+        minMaxGame->printBoard(gameDesign._size);
+    }
+    else
+    {
+        gameDesign.drawO(gameDesign.board._boards[bestMove.row].getPosition().x,
+                         gameDesign.board._boards[bestMove.column].getPosition().y, gameDesign._size);
+        minMaxGame->placeMarker(bestMove.row, bestMove.column, minMaxGame->_computer);
+        gameDesign._window->display();
+        minMaxGame->printBoard(gameDesign._size);
+    }
+
+    minMaxGame->swap();
+}
 
 void Game::checkGameStatus()
 {
@@ -227,16 +273,19 @@ void Game::checkGameStatus()
             break;
         case 3:
             gameDesign.drawChoice();
-            gameDesign.drawX(gameDesign._width/3.8,gameDesign._height/1.5,4);
-            gameDesign.drawO(gameDesign._width/1.8,gameDesign._height/1.5,4);
-                    break;
-        case 4:
             if(minMaxGame == nullptr)
             {
                 minMaxGame = new MinMax(gameDesign._size);
             }
-            gameDesign.drawBoard();
+            gameDesign.drawX(gameDesign._width / 3.8f, gameDesign._height / 1.5f, 4);
+            gameDesign.drawO(gameDesign._width / 1.8f, gameDesign._height / 1.5f, 4);
             break;
+        case 4:
+            gameDesign.drawBoard();
+            gameDesign.drawBack(0, 0, 0.3f);
+            gameDesign.drawRestart(520, 0, 0.3f);
+            break;
+        case 5:
         default:
             break;
     }
@@ -246,8 +295,8 @@ void Game::onSize(const sf::Event& event)
 {
     for(auto& i : gameDesign.menu._textSize)
     {
-        if(event.mouseMove.x > i.getPosition().x && event.mouseMove.x < i.getPosition().x + 80 &&
-           event.mouseMove.y > i.getPosition().y && event.mouseMove.y < i.getPosition().y + 80)
+        if(static_cast<float>(event.mouseMove.x)> i.getPosition().x && static_cast<float>(event.mouseMove.x) < i.getPosition().x + 80 &&
+            static_cast<float>(event.mouseMove.y)> i.getPosition().y && static_cast<float>(event.mouseMove.y) < i.getPosition().y + 80)
         {
             i.setFillColor(sf::Color::Red);
         }
@@ -264,10 +313,10 @@ void Game::onNumber(const sf::Event& event)
     for(int i = 0; i < gameDesign._size - 2; ++i)
     {
 
-        if(event.mouseMove.x > gameDesign.menu._textNumber[i].getPosition().x &&
-           event.mouseMove.x < gameDesign.menu._textNumber[i].getPosition().x + 80 &&
-           event.mouseMove.y > gameDesign.menu._textNumber[i].getPosition().y &&
-           event.mouseMove.x < gameDesign.menu._textNumber[i].getPosition().y + 80)
+        if(static_cast<float>(event.mouseMove.x) > gameDesign.menu._textNumber[i].getPosition().x &&
+            static_cast<float>(event.mouseMove.x) < gameDesign.menu._textNumber[i].getPosition().x + 80 &&
+            static_cast<float>(event.mouseMove.y) > gameDesign.menu._textNumber[i].getPosition().y &&
+            static_cast<float>(event.mouseMove.y) < gameDesign.menu._textNumber[i].getPosition().y + 80)
         {
             gameDesign.menu._textNumber[i].setFillColor(sf::Color::Red);
         }
@@ -281,10 +330,10 @@ void Game::onNumber(const sf::Event& event)
 void Game::onX(const sf::Event& event)
 {
 
-    if(event.mouseMove.x > gameDesign.player._x.getPosition().x &&
-       event.mouseMove.x < gameDesign.player._x.getPosition().x + 170 &&
-       event.mouseMove.y > gameDesign.player._x.getPosition().y &&
-       event.mouseMove.x < gameDesign.player._x.getPosition().y+ 170)
+    if(static_cast<float>(event.mouseMove.x) > gameDesign.player._x.getPosition().x &&
+        static_cast<float>(event.mouseMove.x) < gameDesign.player._x.getPosition().x + 170 &&
+        static_cast<float>(event.mouseMove.y) > gameDesign.player._x.getPosition().y &&
+        static_cast<float>(event.mouseMove.y) < gameDesign.player._x.getPosition().y + 170)
     {
         gameDesign.player._x.setColor(sf::Color(0, 255, 0));
     }
@@ -297,15 +346,45 @@ void Game::onX(const sf::Event& event)
 void Game::onO(const sf::Event& event)
 {
 
-    if(event.mouseMove.x > gameDesign.player._o.getPosition().x &&
-       event.mouseMove.x < gameDesign.player._o.getPosition().x + 170 &&
-       event.mouseMove.y > gameDesign.player._o.getPosition().y &&
-       event.mouseMove.x < gameDesign.player._o.getPosition().y+ 170)
+    if(static_cast<float>(event.mouseMove.x) > gameDesign.player._o.getPosition().x &&
+        static_cast<float>(event.mouseMove.x) < gameDesign.player._o.getPosition().x + 170 &&
+        static_cast<float>(event.mouseMove.y) > gameDesign.player._o.getPosition().y &&
+        static_cast<float>(event.mouseMove.y) < gameDesign.player._o.getPosition().y + 170)
     {
         gameDesign.player._o.setColor(sf::Color(0, 255, 0));
     }
     else
     {
         gameDesign.player._o.setColor(sf::Color(255, 255, 255));
+    }
+}
+
+void Game::onBack(const sf::Event& event)
+{
+    if(static_cast<float>(event.mouseMove.x) > gameDesign.board._back.getPosition().x &&
+        static_cast<float>(event.mouseMove.x) < gameDesign.board._back.getPosition().x + 100 &&
+        static_cast<float>(event.mouseMove.y) > gameDesign.board._back.getPosition().y &&
+        static_cast<float>(event.mouseMove.y) < gameDesign.board._back.getPosition().y + 100)
+    {
+        gameDesign.board._back.setColor(sf::Color(255, 0, 0));
+    }
+    else
+    {
+        gameDesign.board._back.setColor(sf::Color(255, 255, 255));
+    }
+}
+
+void Game::onRestart(const sf::Event& event)
+{
+    if(static_cast<float>(event.mouseMove.x) > gameDesign.board._restart.getPosition().x &&
+        static_cast<float>(event.mouseMove.x) < gameDesign.board._restart.getPosition().x + 100 &&
+        static_cast<float>(event.mouseMove.y) > gameDesign.board._restart.getPosition().y &&
+        static_cast<float>(event.mouseMove.y) < gameDesign.board._restart.getPosition().y + 100)
+    {
+        gameDesign.board._restart.setColor(sf::Color(0, 255, 0));
+    }
+    else
+    {
+        gameDesign.board._restart.setColor(sf::Color(255, 255, 255));
     }
 }
