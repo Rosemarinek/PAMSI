@@ -35,7 +35,18 @@ Game::Game()
     minMaxGame = nullptr;
     _gameStatus = 0;
     _winNumber = 0;
-    _whoseMove = 0;
+}
+
+Game::~Game()
+{
+    _doneCharX.clear();
+    _doneCharO.clear();
+
+    for(auto& i : _slot)
+    {
+        i.clear();
+    }
+    _slot.clear();
 }
 
 void Game::run()
@@ -164,14 +175,15 @@ void Game::checkClickStatus(const sf::Event& event)
                 {
                     if(elementPressed(_event, gameDesign.board._boards[slot]))
                     {
-                        if(minMaxGame->_computer == 'X' && minMaxGame->_currPlayer == minMaxGame->_computer && minMaxGame->isEmpty(gameDesign._size))
+                        if(minMaxGame->_computer == 'X' && minMaxGame->_currPlayer == minMaxGame->_computer &&
+                           minMaxGame->isEmpty(gameDesign._size))
                             movePlayer(slot);
                         else
                         {
                             if(minMaxGame->isEmpty(gameDesign._size))
-                            movePlayer(slot);
+                                movePlayer(slot);
                             if(minMaxGame->isEmpty(gameDesign._size))
-                            moveAI();
+                                moveAI();
                         }
                     }
                 }
@@ -213,7 +225,6 @@ void Game::movePlayer(int slot)
 
         minMaxGame->placeMarker(row, column, minMaxGame->_human);
         gameDesign._window->display();
-        minMaxGame->printBoard(gameDesign._size);
     }
     else if(minMaxGame->_human == 'O' && minMaxGame->_gameBoard[row][column] == ' ')
     {
@@ -224,9 +235,7 @@ void Game::movePlayer(int slot)
 
         minMaxGame->placeMarker(row, column, minMaxGame->_human);
         gameDesign._window->display();
-        minMaxGame->printBoard(gameDesign._size);
     }
-
     isEnd();
     minMaxGame->swap();
 }
@@ -245,7 +254,6 @@ void Game::moveAI()
 
         minMaxGame->placeMarker(bestMove.row, bestMove.column, minMaxGame->_computer);
         gameDesign._window->display();
-        minMaxGame->printBoard(gameDesign._size);
     }
     else if(minMaxGame->_computer == 'O' && minMaxGame->_gameBoard[bestMove.row][bestMove.column] == ' ')
     {
@@ -257,7 +265,6 @@ void Game::moveAI()
 
         minMaxGame->placeMarker(bestMove.row, bestMove.column, minMaxGame->_computer);
         gameDesign._window->display();
-        minMaxGame->printBoard(gameDesign._size);
     }
     isEnd();
     minMaxGame->swap();
@@ -297,7 +304,8 @@ void Game::checkGameStatus()
             {
                 gameDesign._window->draw(i);
             }
-            if(minMaxGame->_computer == 'X' && minMaxGame->_currPlayer == minMaxGame->_computer && minMaxGame->isEmpty(gameDesign._size))
+            if(minMaxGame->_computer == 'X' && minMaxGame->_currPlayer == minMaxGame->_computer &&
+               minMaxGame->isEmpty(gameDesign._size))
                 moveAI();
             break;
         case 5:
@@ -412,9 +420,9 @@ void Game::onRestart(const sf::Event& event)
 void Game::initSlot()
 {
     _slot.resize(gameDesign._size);
-    for(int i = 0; i < _slot.size(); ++i)
+    for(auto& i : _slot)
     {
-        _slot[i].resize(gameDesign._size);
+        i.resize(gameDesign._size);
     }
 
     for(int i = 0; i < _slot.size(); ++i)
@@ -480,13 +488,12 @@ void Game::isEnd()
         gameDesign.board._back.setColor(sf::Color(255, 0, 0));
         gameDesign.board._restart.setColor(sf::Color(0, 255, 0));
     }
-    if(playerWon==0 && !minMaxGame->isEmpty(gameDesign._size))
+    if(playerWon == 0 && !minMaxGame->isEmpty(gameDesign._size))
     {
-            _gameStatus = 5;
-            gameDesign.clearWindow();
-            gameDesign.board._back.setColor(sf::Color(255, 0, 0));
-            gameDesign.board._restart.setColor(sf::Color(0, 255, 0));
-            gameDesign.drawText(240, 150, "TIE!");
-
+        _gameStatus = 5;
+        gameDesign.clearWindow();
+        gameDesign.board._back.setColor(sf::Color(255, 0, 0));
+        gameDesign.board._restart.setColor(sf::Color(0, 255, 0));
+        gameDesign.drawText(240, 150, "TIE!");
     }
 }

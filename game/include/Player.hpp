@@ -7,9 +7,11 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-class Player
+/*!
+ * Structures is responsible for player characters
+ */
+struct Player
 {
-  public:
     /* X objects */
     sf::Image _imX;
     sf::Texture _texX;

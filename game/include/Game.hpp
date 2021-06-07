@@ -10,7 +10,7 @@
 #include "GameDesign.hpp"
 #include "MinMax.hpp"
 
-/*
+/*!
  * Class Game is responsible for game events
  */
 class Game
@@ -21,17 +21,17 @@ class Game
 
     MinMax* minMaxGame;
 
-
     /*Variable specifying the current appearance of the game */
     int _gameStatus;
     /* Variable specifying the number of winning characters*/
     int _winNumber;
-    /*variable specifying whose movement is*/
-    int _whoseMove;
-    /*variable specifying the player character*/
-  // char _playerChar;
-
+    /*vector storing the position of x*/
+    std::vector<sf::Sprite> _doneCharX;
+    /*vector storing the position of o*/
+    std::vector<sf::Sprite> _doneCharO;
+    /*matrix with slot numbers*/
     std::vector<std::vector<int>> _slot;
+
   public:
     /*!
      * Function through a loop pops the event on top of the event queue
@@ -86,6 +86,16 @@ class Game
      */
     void onO(const sf::Event& event);
     /*!
+     * Function changes color of the back button when the mouse cursor is on it
+     * @param event - argument defines a system event
+     */
+    void onBack(const sf::Event& event);
+    /*!
+     * Function changes color of the reset button when the mouse cursor is on it
+     * @param event - argument defines a system event
+     */
+    void onRestart(const sf::Event& event);
+    /*!
      * Function checks if the sprite object has been pressed
      * @param event - argument defines a system event
      * @param sprite - sprite object.
@@ -93,30 +103,41 @@ class Game
      */
     static bool elementPressed(const sf::Event& event, const sf::Sprite& sprite);
     /*!
-     * Function checks if the stext object has been pressed
+     * Function checks if the text object has been pressed
      * @param event - argument defines a system event
      * @param text - text object.
      * @return true if the object has been pressed or false if the object hasn't been pressed
      */
     static bool elementPressed(const sf::Event& event, const sf::Text& text);
-
-   // void movePlayer(int row, int column, int slot);
-     void movePlayer(int slot);
+    /*!
+     * Function that moves player to the selected slot*
+     * @param slot - selected slot
+     */
+    void movePlayer(int slot);
+    /*!
+     * Function that moves AI
+     */
     void moveAI();
+    /*!
+     * Function resets the game
+     */
+    void restart();
+    /*!
+     * Function takes the player back to the menu
+     */
+    void back();
+    /*!
+     * Function checks if someone has won
+     */
+    void isEnd();
+    /*!
+     * Function creates matrix with slot numbers depending on the game size
+     */
+    void initSlot();
 
-    void onBack(const sf::Event& event);
-    void onRestart(const sf::Event& event);
     /*Constructor and destructor*/
     Game();
-    ~Game(){};
-
-   void initSlot();
-   std::vector<sf::Sprite> _doneCharX;
-    std::vector<sf::Sprite> _doneCharO;
-
-    void restart();
-    void back();
-    void isEnd();
+    ~Game();
 };
 
 #endif // GAME_GAME_HPP

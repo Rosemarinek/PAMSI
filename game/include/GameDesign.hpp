@@ -5,7 +5,7 @@
 #include "MainBoard.hpp"
 #include "Player.hpp"
 
-/*
+/*!
  * Class Game Design is responsible for the graphic appearance of the game
  */
 class GameDesign

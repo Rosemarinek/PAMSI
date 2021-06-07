@@ -1,15 +1,17 @@
+#ifndef GAME_MENU_HPP
+#define GAME_MENU_HPP
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#ifndef GAME_MENU_HPP
-#define GAME_MENU_HPP
-
-class Menu
+/*
+ * Structures is responsible for the game menu
+ */
+struct Menu
 {
-  public:
     sf::Image _imMenu;
     sf::Texture _texMenu;
     sf::Sprite _menu;
