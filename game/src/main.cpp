@@ -9,10 +9,4 @@ int main()
 
      game.run();
 
-//    MinMax game(3);
-//
-//    game._human='X';
-//    game._human='O';
-//    std::cout<<"\n";
-//    game.play(3);
 }

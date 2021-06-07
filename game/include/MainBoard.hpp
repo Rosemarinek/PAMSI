@@ -28,6 +28,9 @@ class MainBoard
     sf::Texture _texRestart;
     sf::Sprite _restart;
 
+    sf::Font _font;
+    sf::Text _text;
+
     /*!
      * Function loads the file with logo texture and initializes it
      * @param width - window width
@@ -44,6 +47,8 @@ class MainBoard
 
     void initBack(float x, float y, float scale);
     void initRestart(float x, float y, float scale);
+
+    void initText(float x, float y, std::string text);
 };
 
 #endif // GAME_MAINBOARD_HPP

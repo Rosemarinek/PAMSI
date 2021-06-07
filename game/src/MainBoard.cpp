@@ -40,3 +40,12 @@ void MainBoard::initRestart(float x, float y, float scale)
     _restart.setScale(sf::Vector2f(scale, scale));
     _restart.setPosition(x, y);
 }
+void MainBoard::initText(float x, float y, std::string text)
+{
+    _font.loadFromFile("../resources/fonts/Winkle.ttf");
+    _text.setFont(_font);
+    _text.setFillColor(sf::Color(0,0,0));
+    _text.setString(text);
+    _text.setPosition(sf::Vector2f(x,y));
+    _text.setCharacterSize(80);
+}

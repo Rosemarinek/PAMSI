@@ -122,3 +122,10 @@ void GameDesign::drawRestart(float x, float y, float scale)
     board.initRestart(x,y,scale);
     _window->draw(board._restart);
 }
+
+void GameDesign::drawText(float x, float y, std::string text)
+{
+
+    board.initText(x,y,text);
+    _window->draw(board._text);
+}

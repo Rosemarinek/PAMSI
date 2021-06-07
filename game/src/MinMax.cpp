@@ -62,13 +62,9 @@ void MinMax::printBoard(int size)
 bool MinMax::isEmpty(int size)
 {
     for(int i = 0; i < size; ++i)
-    {
         for(int j = 0; j < size; ++j)
-        {
             if(_gameBoard[i][j] == ' ')
                 return true;
-        }
-    }
     return false;
 }
 
@@ -135,6 +131,7 @@ int MinMax::winner(int size, int winChar)
         }
         else
             counter=1;
+
         if(_gameBoard[i][size-1-i] == _computer && counter == winChar)
             return 10;
         else if(_gameBoard[i][size-1-i] == _human && counter == winChar)
@@ -146,7 +143,7 @@ int MinMax::winner(int size, int winChar)
 
 int MinMax::computerMove(int depth, bool isMax, int size, int winChar)
 {
-    int maxDepth[]={0,0,0,8,4,4,3,3,3,2};
+    int maxDepth[]={0,0,0,8,4,4,3,2,2,2};
     int score = winner(size, winChar);
 
     if(depth==maxDepth[size])
@@ -284,11 +281,11 @@ MinMax::MinMax(int size, MinMax& otherMinMax)
 }
 void MinMax::clearBoard()
 {
-    for(int i = 0; i < _gameBoard.size(); ++i)
+    for(auto & i : _gameBoard)
     {
         for(int j = 0; j < _gameBoard.size(); ++j)
         {
-            _gameBoard[i][j] = ' ';
+            i[j] = ' ';
         }
     }
 }

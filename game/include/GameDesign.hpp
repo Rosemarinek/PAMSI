@@ -38,6 +38,7 @@ class GameDesign
     /*Board objects */
     MainBoard board;
 
+
     /*!
      * Function is responsible for window initialization
      */
@@ -97,6 +98,9 @@ class GameDesign
     void drawBack(float  x, float y, float scale);
 
     void drawRestart(float  x, float y, float scale);
+
+    void drawText(float x, float y, std::string text);
+
 };
 
 #endif // GAME_GAMEDESIGN_HPP

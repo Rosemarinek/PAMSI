@@ -111,6 +111,12 @@ class Game
     ~Game(){};
 
    void initSlot();
+   std::vector<sf::Sprite> _doneCharX;
+    std::vector<sf::Sprite> _doneCharO;
+
+    void restart();
+    void back();
+    void isEnd();
 };
 
 #endif // GAME_GAME_HPP
