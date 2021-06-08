@@ -110,44 +110,71 @@ int MinMax::winner(int size, int winChar)
     }
 
     // diagonal
-    counter = 1;
-    for(int i = 0; i < size - 1; ++i)
-    {
-        if(_gameBoard[i][i] == _gameBoard[i + 1][i + 1])
-        {
-            counter++;
-        }
-        else
-            counter = 1;
+    for (int i = 0; i <= size - winChar; i++) {
+        for (int j = 0; j <= size - winChar; j++) {
+            int l = i;
+            int counterAI = 0;
+            int counterH = 0;
+            for (int k = j ; k < winChar+j ; k++) {
+                if (_gameBoard[l][k] == _computer)
+                {
+                    counterAI++;
+                    counterH = 0;
+                }
+                else if(_gameBoard[l][k] == _human)
+                {
+                    counterAI=0;
+                    counterH ++;
+                }
 
-        if(_gameBoard[i][i] == _computer && counter == winChar)
-            return 10;
-        else if(_gameBoard[i][i] == _human && counter == winChar)
-            return -10;
+                if (counterAI==winChar)
+                    return 10;
+                if (counterH==winChar)
+                    return -10;
+
+                if (l < size - 1)
+                    l++;
+            }
+        }
     }
+
+
     // backwards diagonal
+    for (int i = 0; i <= size - winChar; i++) {
+        for (int j = 0; j <= size - winChar; j++) {
+            int l = i;
+            int counterAI = 0;
+            int counterH = 0;
+            for (int k = winChar + j - 1; k >= i; k--) {
+                if (_gameBoard[l][k] == _computer)
+                {
+                    counterAI++;
+                    counterH = 0;
+                }
+                else if(_gameBoard[l][k] == _human)
+                {
+                    counterAI=0;
+                    counterH ++;
+                }
 
-    counter = 1;
-    for(int i = 0; i < size - 1; ++i)
-    {
-        if(_gameBoard[i][size - 1 - i] == _gameBoard[i + 1][size - 2 - i])
-        {
-            counter++;
+                if (counterAI==winChar)
+                    return 10;
+                if (counterH==winChar)
+                    return -10;
+
+                if (l < size - 1)
+                    l++;
+            }
         }
-        else
-            counter = 1;
-
-        if(_gameBoard[i][size - 1 - i] == _computer && counter == winChar)
-            return 10;
-        else if(_gameBoard[i][size - 1 - i] == _human && counter == winChar)
-            return -10;
     }
+
+
     return 0;
 }
 
 int MinMax::computerMove(int depth, bool isMax, int size, int winChar)
 {
-    int maxDepth[] = {0, 0, 0, 8, 4, 4, 3, 2, 2, 2};
+    int maxDepth[] = {0, 0, 0, 8, 4, 3, 3, 2, 2, 2};
     int score = winner(size, winChar);
 
     if(depth == maxDepth[size])
