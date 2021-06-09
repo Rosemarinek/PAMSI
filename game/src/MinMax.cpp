@@ -45,20 +45,6 @@ void MinMax::placeMarker(int x, int y, char player)
     _gameBoard[x][y] = player;
 }
 
-void MinMax::printBoard(int size)
-{
-    std::cout << "\n";
-    for(int i = 0; i < size; ++i)
-    {
-        for(int j = 0; j < size; ++j)
-        {
-            std::cout << _gameBoard[i][j] << " | ";
-        }
-        std::cout << "\n";
-        std::cout << "----------\n";
-    }
-}
-
 bool MinMax::isEmpty(int size)
 {
     for(int i = 0; i < size; ++i)
@@ -71,6 +57,64 @@ bool MinMax::isEmpty(int size)
 int MinMax::winner(int size, int winChar)
 {
     int counter;
+
+    // diagonal
+    for (int i = 0; i <= size - winChar; i++) {
+        for (int j = 0; j <= size - winChar; j++) {
+            int l = i;
+            int counterAI = 0;
+            int counterH = 0;
+            for (int k = j ; k < winChar+j ; k++) {
+                if (_gameBoard[l][k] == _computer)
+                {
+                    counterAI++;
+                    counterH = 0;
+                    if (counterAI==winChar)
+                        return 10;
+
+                }
+                else if(_gameBoard[l][k] == _human)
+                {
+                    counterAI=0;
+                    counterH++;
+                    if (counterH==winChar)
+                        return -10;
+                }
+
+                if (l < size - 1)
+                    l++;
+            }
+        }
+    }
+
+    // backwards diagonal
+    for (int i = 0; i <= size - winChar; i++) {
+        for (int j = 0; j <= size - winChar; j++) {
+            int l = i;
+            int counterAI = 0;
+            int counterH = 0;
+            for (int k = winChar + j - 1; k >= i; k--) {
+                if (_gameBoard[l][k] == _computer)
+                {
+                    counterAI++;
+                    counterH = 0;
+                    if (counterAI==winChar)
+                        return 10;
+                }
+                else if(_gameBoard[l][k] == _human)
+                {
+                    counterAI=0;
+                    counterH++;
+                    if (counterH==winChar)
+                        return -10;
+                }
+
+                if (l < size - 1)
+                    l++;
+            }
+        }
+    }
+
     // row
     for(int i = 0; i < size; ++i)
     {
@@ -109,64 +153,6 @@ int MinMax::winner(int size, int winChar)
         }
     }
 
-    // diagonal
-    for (int i = 0; i <= size - winChar; i++) {
-        for (int j = 0; j <= size - winChar; j++) {
-            int l = i;
-            int counterAI = 0;
-            int counterH = 0;
-            for (int k = j ; k < winChar+j ; k++) {
-                if (_gameBoard[l][k] == _computer)
-                {
-                    counterAI++;
-                    counterH = 0;
-                }
-                else if(_gameBoard[l][k] == _human)
-                {
-                    counterAI=0;
-                    counterH ++;
-                }
-
-                if (counterAI==winChar)
-                    return 10;
-                if (counterH==winChar)
-                    return -10;
-
-                if (l < size - 1)
-                    l++;
-            }
-        }
-    }
-
-
-    // backwards diagonal
-    for (int i = 0; i <= size - winChar; i++) {
-        for (int j = 0; j <= size - winChar; j++) {
-            int l = i;
-            int counterAI = 0;
-            int counterH = 0;
-            for (int k = winChar + j - 1; k >= i; k--) {
-                if (_gameBoard[l][k] == _computer)
-                {
-                    counterAI++;
-                    counterH = 0;
-                }
-                else if(_gameBoard[l][k] == _human)
-                {
-                    counterAI=0;
-                    counterH ++;
-                }
-
-                if (counterAI==winChar)
-                    return 10;
-                if (counterH==winChar)
-                    return -10;
-
-                if (l < size - 1)
-                    l++;
-            }
-        }
-    }
 
 
     return 0;

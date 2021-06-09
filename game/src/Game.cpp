@@ -35,6 +35,7 @@ Game::Game()
     minMaxGame = nullptr;
     _gameStatus = 0;
     _winNumber = 0;
+    isFirstMove=true;
 }
 
 Game::~Game()
@@ -47,6 +48,7 @@ Game::~Game()
         i.clear();
     }
     _slot.clear();
+    delete minMaxGame;
 }
 
 void Game::run()
@@ -173,16 +175,16 @@ void Game::checkClickStatus(const sf::Event& event)
             {
                 for(int slot = 0; slot < gameDesign.board._boards.size(); ++slot)
                 {
-                    if(elementPressed(_event, gameDesign.board._boards[slot]))
+                    if(elementPressed(_event, gameDesign.board._boards[slot])&&minMaxGame->_gameBoard[slotCor(slot).row][slotCor(slot).column]==' ')
                     {
                         if(minMaxGame->_computer == 'X' && minMaxGame->_currPlayer == minMaxGame->_computer &&
                            minMaxGame->isEmpty(gameDesign._size))
                             movePlayer(slot);
                         else
                         {
-                            if(minMaxGame->isEmpty(gameDesign._size))
+                            if(minMaxGame->isEmpty(gameDesign._size)&&minMaxGame->winner(gameDesign._size,_winNumber)==0)
                                 movePlayer(slot);
-                            if(minMaxGame->isEmpty(gameDesign._size))
+                            if(minMaxGame->isEmpty(gameDesign._size)&&minMaxGame->winner(gameDesign._size,_winNumber)==0)
                                 moveAI();
                         }
                     }
@@ -202,19 +204,9 @@ void Game::checkClickStatus(const sf::Event& event)
 
 void Game::movePlayer(int slot)
 {
-    int matrixSlot = slot;
-    matrixSlot++;
     int row, column;
-    row = matrixSlot / gameDesign._size;
-    if(matrixSlot % gameDesign._size == 0)
-    {
-        row = row - 1;
-        column = gameDesign._size - 1;
-    }
-    else
-    {
-        column = matrixSlot % gameDesign._size - 1;
-    }
+    row = slotCor(slot).row;
+    column = slotCor(slot).column;
 
     if(minMaxGame->_human == 'X' && minMaxGame->_gameBoard[row][column] == ' ')
     {
@@ -242,7 +234,15 @@ void Game::movePlayer(int slot)
 
 void Game::moveAI()
 {
-    Move bestMove = minMaxGame->findBestMove(gameDesign._size, _winNumber);
+    Move bestMove;
+    if(isFirstMove && minMaxGame->_computer=='X'){
+        std::srand(std::time(nullptr));
+        bestMove.row=(std::rand()+333)%gameDesign._size;
+        bestMove.column=(std::rand()+167)%gameDesign._size;
+        isFirstMove=false;
+    }
+    else
+        bestMove = minMaxGame->findBestMove(gameDesign._size, _winNumber);
 
     if(minMaxGame->_computer == 'X' && minMaxGame->_gameBoard[bestMove.row][bestMove.column] == ' ')
     {
@@ -436,6 +436,7 @@ void Game::initSlot()
 
 void Game::restart()
 {
+
     _gameStatus = 4;
     minMaxGame->_currPlayer = 'X';
     minMaxGame->clearBoard();
@@ -443,10 +444,12 @@ void Game::restart()
     _doneCharX.clear();
     gameDesign.board._back.setColor(sf::Color(255, 255, 255));
     gameDesign.board._restart.setColor(sf::Color(255, 255, 255));
+    isFirstMove=true;
 }
 
 void Game::back()
 {
+
     _gameStatus = 0;
     gameDesign._size = 0;
     _winNumber = 0;
@@ -455,6 +458,7 @@ void Game::back()
     minMaxGame = nullptr;
     _doneCharO.clear();
     _doneCharX.clear();
+    isFirstMove=true;
 
     for(int i = 0; i < _slot.size(); ++i)
     {
@@ -496,4 +500,23 @@ void Game::isEnd()
         gameDesign.board._restart.setColor(sf::Color(0, 255, 0));
         gameDesign.drawText(240, 150, "TIE!");
     }
+}
+
+Move Game::slotCor(int slot)
+{
+    int matrixSlot = slot;
+    Move move;
+    matrixSlot++;
+    int row, column;
+    move.row = matrixSlot / gameDesign._size;
+    if(matrixSlot % gameDesign._size == 0)
+    {
+        move.row = move.row - 1;
+        move.column = gameDesign._size - 1;
+    }
+    else
+    {
+        move.column = matrixSlot % gameDesign._size - 1;
+    }
+    return move;
 }

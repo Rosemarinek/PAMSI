@@ -19,8 +19,8 @@ class Game
     GameDesign gameDesign;
     sf::Event _event;
 
-    MinMax* minMaxGame;
 
+    MinMax* minMaxGame;
     /*Variable specifying the current appearance of the game */
     int _gameStatus;
     /* Variable specifying the number of winning characters*/
@@ -31,7 +31,8 @@ class Game
     std::vector<sf::Sprite> _doneCharO;
     /*matrix with slot numbers*/
     std::vector<std::vector<int>> _slot;
-
+    /*Variable specifying if computer moves first*/
+    bool isFirstMove;
   public:
     /*!
      * Function through a loop pops the event on top of the event queue
@@ -134,7 +135,10 @@ class Game
      * Function creates matrix with slot numbers depending on the game size
      */
     void initSlot();
-
+    /*!
+     * Function converts the slot into row and column
+     */
+    Move slotCor(int slot);
     /*Constructor and destructor*/
     Game();
     ~Game();

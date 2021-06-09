@@ -95,6 +95,7 @@ void GameDesign::drawPlayButton(float x, float y)
     menu.initPlayButton(x, y);
     _window->draw(menu._play);
 }
+
 void GameDesign::drawSize()
 {
     for(const auto& i : menu._textSize)
